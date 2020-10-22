@@ -1,0 +1,15 @@
+name: SAOGuild
+version: ${project.version}
+main: de.fynn.guild.Main
+api-version: 1.16
+authors: [ Fynn ]
+prefix: §9[§bSwordCraftOnline§9]§r§7 Message
+commands:
+  guildVillager:
+    description: ""
+    usage: /guildVillager create [Name]
+  guild:
+    description: ""
+    usage: /guild invite <Player>
+           /guild invite accept
+           /guild kick <Player>
