@@ -8,3 +8,9 @@ Database:
     'root'
   Password:
     'Fynn2211'
+#
+#
+#
+Language:
+  Default:
+    'de_DE'

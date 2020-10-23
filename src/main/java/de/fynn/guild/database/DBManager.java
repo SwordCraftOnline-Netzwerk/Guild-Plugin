@@ -1,6 +1,8 @@
 package de.fynn.guild.database;
 
 import de.fynn.guild.guild.Guild;
+import de.fynn.guild.lang.Language;
+import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +24,7 @@ public class DBManager {
         dbConnector.executeSQL("CREATE SCHEMA IF NOT EXISTS guild");
         dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS guild.villagers (UUID VARCHAR(200) NOT NULL,PRIMARY KEY (UUID),UNIQUE INDEX UUID_UNIQUE (UUID ASC) VISIBLE);");
         dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS guild.guilds (guild VARCHAR(200) NOT NULL,leader VARCHAR(200) NULL,PRIMARY KEY (guild));");
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS guild.lang (UUID VARCHAR(200) NOT NULL,lang VARCHAR(200) NULL,PRIMARY KEY (UUID));");
     }
 
     public HashMap<String, Guild> loadGuilds(){
@@ -105,6 +108,34 @@ public class DBManager {
 
     public void removeVillager(String uuid){
         dbConnector.executeSQL("DELETE FROM guild.villagers WHERE UUID = '"+uuid+"';");
+    }
+
+    public boolean hasLanguage(Player player){
+        ResultSet result = dbConnector.getData("SELECT EXISTS(SELECT * FROM guild.lang WHERE UUID = '"+player.getUniqueId().toString()+"');");
+        try {
+            return result.getInt(1)==1;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return false;
+    }
+
+    public String getLanguage(Player player){
+        ResultSet result = dbConnector.getData("SELECT lang FROM guild.lang WHERE UUID = '"+player.getUniqueId().toString()+"';");
+        try {
+            return result.getString(1);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    public void setLanguage(Player player, String language){
+        if(hasLanguage(player)){
+            dbConnector.executeSQL("INSERT INTO guild.lang(UUID,lang) VALUES ("+player.getUniqueId().toString()+","+language+");");
+        }else {
+            dbConnector.executeSQL("UPDATE guild.lang SET lang = "+language+" WHERE UUID = '"+player.getUniqueId().toString()+"';");
+        }
     }
 
 }
