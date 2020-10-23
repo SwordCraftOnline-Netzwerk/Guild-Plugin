@@ -16,7 +16,7 @@ public class PlayerChatListener implements Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event){
         if(observedPlayerCreate.contains(event.getPlayer())){
-            Main.getGuildManager().createGuild(event.getPlayer(),event.getMessage());
+            Main.guildManager.createGuild(event.getMessage(),event.getPlayer());
             observedPlayerCreate.remove(event.getPlayer());
             event.setCancelled(true);
         }

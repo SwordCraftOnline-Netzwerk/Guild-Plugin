@@ -9,9 +9,8 @@ public class EntityDeathListener implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event){
-        if(Main.villagerIDContains(event.getEntity().getUniqueId())){
-            Main.removeVillager(event.getEntity().getUniqueId());
-            Main.getFileHandler().removeVillager(event.getEntity().getUniqueId());
+        if(Main.villagerManager.containsVillager(event.getEntity().getUniqueId())){
+            Main.villagerManager.removeVillager(event.getEntity().getUniqueId());
         }
     }
 

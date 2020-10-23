@@ -6,6 +6,11 @@ import de.fynn.guild.EventHandler.PlayerChatListener;
 import de.fynn.guild.EventHandler.PlayerInteractEntityListener;
 import de.fynn.guild.cmd.CreateGuildVillager;
 import de.fynn.guild.cmd.GuildCommands;
+import de.fynn.guild.database.DBManager;
+import de.fynn.guild.guild.Guild;
+import de.fynn.guild.guild.GuildManager;
+import de.fynn.guild.system.FileHandler;
+import de.fynn.guild.system.VillagerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,17 +22,21 @@ import java.util.UUID;
 
 public final class Main extends JavaPlugin {
 
-    protected static HashMap<String,Guild> guilds = new HashMap<>();
-    protected static List<UUID> villagerIDs = new ArrayList<>();
-
     private static Main plugin;
-    protected static FileHandler fileHandler;
-    protected static GuildManager guildManager = new GuildManager();
+    private static FileHandler fileHandler;
+    private static DBManager dbManager;
+    public static GuildManager guildManager;
+    public static VillagerManager villagerManager;
 
     @Override
     public void onEnable() {
         plugin = this;
-        saveDefaultConfig();
+
+        fileHandler = new FileHandler();
+        dbManager = new DBManager(fileHandler.getDBInfo());
+        guildManager = new GuildManager(dbManager);
+        villagerManager = new VillagerManager(dbManager);
+
         PluginManager plManager = Bukkit.getPluginManager();
         plManager.registerEvents(new PlayerInteractEntityListener(),this);
         plManager.registerEvents(new InventoryListener(),this);
@@ -35,9 +44,6 @@ public final class Main extends JavaPlugin {
         plManager.registerEvents(new EntityDeathListener(),this);
         getCommand("guildVillager").setExecutor(new CreateGuildVillager());
         getCommand("guild").setExecutor(new GuildCommands());
-        fileHandler = new FileHandler();
-        villagerIDs = fileHandler.getVillager();
-        guilds = fileHandler.loadAllGuilds();
     }
 
     @Override
@@ -48,25 +54,5 @@ public final class Main extends JavaPlugin {
     public static Main getPlugin(){
         return plugin;
     }
-
-    public static GuildManager getGuildManager() {
-        return guildManager;
-    }
-
-    public static FileHandler getFileHandler() {
-        return fileHandler;
-    }
-
-    public static void addVillagerID(UUID uuid){
-        villagerIDs.add(uuid);
-    }
-
-    public static boolean villagerIDContains(UUID uuid){
-        return villagerIDs.contains(uuid);
-    }
-
-     public static void removeVillager(UUID uuid){
-        villagerIDs.remove(uuid);
-     }
 
 }
