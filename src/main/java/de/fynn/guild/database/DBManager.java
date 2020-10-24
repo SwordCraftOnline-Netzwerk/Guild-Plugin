@@ -1,7 +1,6 @@
 package de.fynn.guild.database;
 
 import de.fynn.guild.guild.Guild;
-import de.fynn.guild.lang.Language;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
@@ -113,6 +112,9 @@ public class DBManager {
     public boolean hasLanguage(Player player){
         ResultSet result = dbConnector.getData("SELECT EXISTS(SELECT * FROM guild.lang WHERE UUID = '"+player.getUniqueId().toString()+"');");
         try {
+            if(!result.next()){
+                return false;
+            }
             return result.getInt(1)==1;
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -132,9 +134,9 @@ public class DBManager {
 
     public void setLanguage(Player player, String language){
         if(hasLanguage(player)){
-            dbConnector.executeSQL("INSERT INTO guild.lang(UUID,lang) VALUES ("+player.getUniqueId().toString()+","+language+");");
+            dbConnector.executeSQL("INSERT INTO guild.lang(UUID,lang) VALUES ("+player.getUniqueId().toString()+",'"+language+"');");
         }else {
-            dbConnector.executeSQL("UPDATE guild.lang SET lang = "+language+" WHERE UUID = '"+player.getUniqueId().toString()+"';");
+            dbConnector.executeSQL("UPDATE guild.lang SET lang = '"+language+"' WHERE UUID = '"+player.getUniqueId().toString()+"';");
         }
     }
 

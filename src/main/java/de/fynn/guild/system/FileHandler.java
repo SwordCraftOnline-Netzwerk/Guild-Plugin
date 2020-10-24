@@ -18,4 +18,8 @@ public class FileHandler {
                 cfg.getString("Database.User"),
                 cfg.getString("Database.Password")};
     }
+
+    public String getDefaultLanguage(){
+        return cfg.getString("Language.Default");
+    }
 }

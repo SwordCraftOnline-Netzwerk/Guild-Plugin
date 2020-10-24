@@ -11,11 +11,12 @@ public class LanguageHandler {
     private HashMap<Player,Language> selectedLanguage = new HashMap<>();
     private FileHandler fileHandler;
     private DBManager dbManager;
-    private LangFileLoader langFileLoader = new LangFileLoader();
+    private LangFileLoader langFileLoader;
 
     public LanguageHandler(FileHandler fileHandler, DBManager dbManager) {
         this.fileHandler = fileHandler;
         this.dbManager = dbManager;
+        langFileLoader = new LangFileLoader(fileHandler);
     }
 
     public Language getLanguage(Player player){
@@ -23,7 +24,11 @@ public class LanguageHandler {
     }
 
     private void setLanguage(Player player, Language language){
-        selectedLanguage.replace(player, language);
+        if(selectedLanguage.containsKey(player)){
+            selectedLanguage.replace(player, language);
+        }else {
+            selectedLanguage.put(player, language);
+        }
         dbManager.setLanguage(player,language.getName());
     }
 
@@ -31,7 +36,7 @@ public class LanguageHandler {
         if(dbManager.hasLanguage(player)){
             setLanguage(player,langFileLoader.getLanguage(dbManager.getLanguage(player)));
         }else {
-            setLanguage(player,langFileLoader.getLanguage("default"));
+            setLanguage(player,langFileLoader.getDefaultLanguage());
             dbManager.setLanguage(player,"default");
         }
     }

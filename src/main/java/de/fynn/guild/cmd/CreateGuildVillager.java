@@ -1,6 +1,7 @@
 package de.fynn.guild.cmd;
 
 import de.fynn.guild.Main;
+import de.fynn.guild.lang.MessagePlaceholder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,11 +34,11 @@ public class CreateGuildVillager implements CommandExecutor {
                 Main.villagerManager.addVillager(villager.getUniqueId());
                 return true;
             }else {
-                sender.sendMessage("Der Befehl wurde nicht gefunden, bitte versuche folgendes:");
+                sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("commandNotFound")));
                 return false;
             }
         }else {
-            sender.sendMessage("Du musst ein Spieler sein um diesen Befehl zu benutzen!");
+            sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("onlyForPlayer")));
             return true;
         }
     }
