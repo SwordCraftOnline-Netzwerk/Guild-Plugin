@@ -39,10 +39,11 @@ public class LangFileLoader {
         }
         languages.add(getLanguage(fileHandler.getDefaultLanguage()));
         defaultLang = getLanguage(fileHandler.getDefaultLanguage());
-    }
-
-    public List<String> avaiableLanguages(){
-        return avaiableLanguages;
+        Main.getPlugin().getLogger().info("loaded "+avaiableLanguages.size()+" Languages:");
+        for (String s:
+             avaiableLanguages) {
+            Main.getPlugin().getLogger().info("---"+s+"---");
+        }
     }
 
     public Language getLanguage(String language){

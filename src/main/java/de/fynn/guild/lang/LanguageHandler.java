@@ -18,7 +18,7 @@ public class LanguageHandler {
     }
 
     public Language getLanguage(Player player){
-        return langFileLoader.getDefaultLanguage();//selectedLanguage.get(player);
+        return selectedLanguage.get(player);
     }
 
     public LangFileLoader getLangFileLoader(){
