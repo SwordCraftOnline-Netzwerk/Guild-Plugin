@@ -20,15 +20,15 @@ public class GuildCommands implements CommandExecutor {
                     if(args[1].equals("accept")){
                         if(Main.guildManager.hasInvite((Player) sender)){
                             Main.guildManager.addMember(((Player)sender).getUniqueId().toString(),Main.guildManager.getInvite((Player) sender));
-                            sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("invite.inviteAccept")));
-                            sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("joinGuild")));
+                            sender.sendMessage(Main.getMsg((Player) sender,"invite.inviteAccept"));
+                            sender.sendMessage(Main.getMsg((Player) sender,"joinGuild.player"));
                             for (UUID uuid:
                                  Main.guildManager.getPlayerGuild((Player) sender).getMembers()) {
-                                Bukkit.getPlayer(uuid).sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage(Bukkit.getPlayer(uuid)).getMessage("joinGuild")));
+                                Bukkit.getPlayer(uuid).sendMessage(Main.getMsg((Player) sender,Bukkit.getPlayer(uuid),"joinGuild.guild"));
                             }
                             return true;
                         }else {
-                            sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("invite.noInvite")));
+                            sender.sendMessage(Main.getMsg((Player) sender,"invite.noInvite"));
                             return true;
                         }
                     }else {
@@ -37,22 +37,22 @@ public class GuildCommands implements CommandExecutor {
                                 if(Main.guildManager.isLeader((Player) sender)){
                                     if(Bukkit.getPlayer(args[1])!=sender){
                                         Main.guildManager.invite(Bukkit.getPlayer(args[1]),Main.guildManager.getPlayerGuild((Player)sender).getGuildName());
-                                        Bukkit.getPlayer(args[1]).sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage(Bukkit.getPlayer(args[1])).getMessage("invite.guildInvite")));
+                                        Bukkit.getPlayer(args[1]).sendMessage(Main.getMsg((Player) sender,Bukkit.getPlayer(args[1]),"invite.guildInvite"));
                                         return true;
                                     }else {
-                                        sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("invite.noSelfInvite")));
+                                        sender.sendMessage(Main.getMsg((Player) sender,"invite.noSelfInvite"));
                                         return true;
                                     }
                                 }else {
-                                    sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("noPermission")));
+                                    sender.sendMessage(Main.getMsg((Player) sender,"noPermission"));
                                     return true;
                                 }
                             }else {
-                                sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("noGuild")));
+                                sender.sendMessage(Main.getMsg((Player) sender,"noGuild"));
                                 return true;
                             }
                         }else {
-                            sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("playerNotFound")));
+                            sender.sendMessage(Main.getMsg(Bukkit.getPlayer(args[1]),(Player) sender,"playerNotFound"));
                             return true;
                         }
                     }
@@ -60,30 +60,34 @@ public class GuildCommands implements CommandExecutor {
                     if(Main.guildManager.hasGuild((Player) sender)){
                         if(Main.guildManager.isLeader((Player) sender)){
                             if(Bukkit.getPlayer(args[1])!=null){
+                                Bukkit.getPlayer(args[1]).sendMessage(Main.getMsg((Player) sender,Bukkit.getPlayer(args[1]),"kickedFromGuild.player"));
+                                for (UUID uuid:
+                                        Main.guildManager.getPlayerGuild((Player) sender).getMembers()) {
+                                    Bukkit.getPlayer(uuid).sendMessage(Main.getMsg(Bukkit.getPlayer(args[1]),Bukkit.getPlayer(uuid),"kickedFromGuild.guild"));
+                                }
                                 Main.guildManager.removeMember(Bukkit.getPlayer(args[1]).getUniqueId().toString(),Main.guildManager.getPlayerGuild((Player) sender).getGuildName());
-                                Bukkit.getPlayer(args[1]).sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("kickedFromGuild.player")));;
                                 return true;
                             }else {
-                                sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("playerNotFound")));
+                                sender.sendMessage(Main.getMsg(Bukkit.getPlayer(args[1]),(Player) sender,"playerNotFound"));
                                 return true;
                             }
                         }else {
-                            sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("noPermission")));
+                            sender.sendMessage(Main.getMsg((Player) sender,"noPermission"));
                             return true;
                         }
                     }else {
-                        sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("noGuild")));
+                        sender.sendMessage(Main.getMsg((Player) sender,"noGuild"));
                         return true;
                     }
                 }else {
                     return false;
                 }
             }else {
-                sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("commandNotFound")));
+                sender.sendMessage(Main.getMsg((Player) sender,"commandNotFound"));
                 return false;
             }
         }else {
-            sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("onlyForPlayers")));
+            sender.sendMessage(Main.getMsg(null,"onlyForPlayers"));
             return true;
         }
     }

@@ -1,5 +1,6 @@
 package de.fynn.guild.guild;
 
+import de.fynn.guild.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,7 +17,7 @@ public class GUIBuilder {
     }
 
     public Inventory buildCreateGuildGUI(Player player){
-        inventory = Bukkit.createInventory(player,27,"Gilde gründen");
+        inventory = Bukkit.createInventory(player,27,Main.getTitle(player,"inventorys.createGuild"));
         ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta meta = filler.getItemMeta();
         meta.setDisplayName(" ");
@@ -27,7 +28,7 @@ public class GUIBuilder {
 
         ItemStack create = new ItemStack(Material.GREEN_WOOL);
         meta = create.getItemMeta();
-        meta.setDisplayName("neue Gilde gründen");
+        meta.setDisplayName(Main.getTitle(player,"createGuild"));
         create.setItemMeta(meta);
         inventory.setItem(13,create);
 
@@ -35,7 +36,7 @@ public class GUIBuilder {
     }
 
     public Inventory buildGuildGUI(Player player,boolean isOwner){
-        inventory = Bukkit.createInventory(player,27,"Gilde verwalten");
+        inventory = Bukkit.createInventory(player,27,Main.getTitle(player,"inventorys.manageGuild"));
         ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta meta = filler.getItemMeta();
         meta.setDisplayName(" ");
@@ -46,12 +47,12 @@ public class GUIBuilder {
 
         ItemStack leave = new ItemStack(Material.RED_WOOL);
         meta = leave.getItemMeta();
-        meta.setDisplayName("Gilde verlassen");
+        meta.setDisplayName(Main.getTitle(player,"leaveGuild"));
         leave.setItemMeta(meta);
         if(isOwner){
             ItemStack close = new ItemStack(Material.BARRIER);
             meta = close.getItemMeta();
-            meta.setDisplayName("Gilde auflösen");
+            meta.setDisplayName(Main.getTitle(player,"closeGuild"));
             close.setItemMeta(meta);
             inventory.setItem(12,leave);
             inventory.setItem(14,close);

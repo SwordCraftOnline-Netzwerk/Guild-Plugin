@@ -37,6 +37,7 @@ public class LangFileLoader {
             avaiableLanguages.add(f.getName().substring(0,f.getName().length()-4));
             languages.add(new Language(avaiableLanguages.get(avaiableLanguages.size()-1),f));
         }
+        languages.add(getLanguage(fileHandler.getDefaultLanguage()));
         defaultLang = getLanguage(fileHandler.getDefaultLanguage());
     }
 

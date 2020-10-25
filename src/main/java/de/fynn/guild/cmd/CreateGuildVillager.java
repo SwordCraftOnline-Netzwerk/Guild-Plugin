@@ -20,7 +20,7 @@ public class CreateGuildVillager implements CommandExecutor {
             }else if(args.length == 1 && args[0].equals("create")){
                 Entity villager = ((Player) sender).getWorld().spawnEntity(((Player) sender).getLocation(), EntityType.VILLAGER);
                 villager.setInvulnerable(true);
-                villager.setCustomName("Gildenverwalter");
+                villager.setCustomName("Gildmaster");
                 villager.setCustomNameVisible(true);
                 ((LivingEntity)villager).setAI(false);
                 Main.villagerManager.addVillager(villager.getUniqueId());
@@ -34,11 +34,11 @@ public class CreateGuildVillager implements CommandExecutor {
                 Main.villagerManager.addVillager(villager.getUniqueId());
                 return true;
             }else {
-                sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("commandNotFound")));
+                sender.sendMessage(Main.getMsg((Player) sender,"commandNotFound"));
                 return false;
             }
         }else {
-            sender.sendMessage(MessagePlaceholder.getPlaceholder((Player) sender,Main.languageHandler.getLanguage((Player) sender).getMessage("onlyForPlayer")));
+            sender.sendMessage(Main.getMsg(null,"onlyForPlayer"));
             return true;
         }
     }

@@ -13,3 +13,6 @@ commands:
     usage: /guild invite <Player>
            /guild invite accept
            /guild kick <Player>
+  guildLanguage:
+    description: ""
+    usage: /guildLanguage <Language> z.B. de_DE

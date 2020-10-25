@@ -125,6 +125,9 @@ public class DBManager {
     public String getLanguage(Player player){
         ResultSet result = dbConnector.getData("SELECT lang FROM guild.lang WHERE UUID = '"+player.getUniqueId().toString()+"';");
         try {
+            if(!result.next()){
+                return "default";
+            }
             return result.getString(1);
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -134,9 +137,9 @@ public class DBManager {
 
     public void setLanguage(Player player, String language){
         if(hasLanguage(player)){
-            dbConnector.executeSQL("INSERT INTO guild.lang(UUID,lang) VALUES ("+player.getUniqueId().toString()+",'"+language+"');");
-        }else {
             dbConnector.executeSQL("UPDATE guild.lang SET lang = '"+language+"' WHERE UUID = '"+player.getUniqueId().toString()+"';");
+        }else {
+            dbConnector.executeSQL("INSERT INTO guild.lang(UUID,lang) VALUES ('"+player.getUniqueId().toString()+"','"+language+"');");
         }
     }
 

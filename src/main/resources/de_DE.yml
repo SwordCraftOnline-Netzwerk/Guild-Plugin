@@ -11,7 +11,13 @@ Messages:
        'Der Spieler %player_name% konnte nicht gefunden werden'
      noPermission:
        'Du hast nicht genug Rechte um diesen Befehl auszuführen'
+     noGuild:
+       'Du musst in einer Gilde sein'
+    languageDoNotExist:
+      'Die gewünschte Spreche exestiert nicht'
   guild:
+     askGuildName:
+      'Um die erstelung der Gilde abzuschließen, gib bitte den Gildennamen in den Chat ein'
      guildCreated:
        'Die Gilde %guild_name% wurde erfolgreich gegründet'
      joinGuild:
@@ -36,3 +42,22 @@ Messages:
           'Du hast die einladung für die Gilde %guild_name% angenommen'
         noSelfInvite:
           'Du kanst dich nicht selbst einladen'
+        noInvite:
+          'DU hast zur Zeit keine Einladung'
+     guildClosed:
+       'Die Gilde %guild_name% wurde aufgelöst, du bist nun in keiner Gilde mehr'
+#
+#
+#
+GUI:
+  inventorys:
+    createGuild:
+      'Gilde gründen'
+    manageGuild:
+      'Gilde %guild_name% verwalten'
+  createGuild:
+    'neue Gilde gründen'
+  leaveGuild:
+    'Gilde verlassen'
+  closeGuild:
+    'Gilde auflösen'

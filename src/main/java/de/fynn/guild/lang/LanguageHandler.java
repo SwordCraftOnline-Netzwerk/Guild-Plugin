@@ -9,21 +9,23 @@ import java.util.HashMap;
 public class LanguageHandler {
 
     private HashMap<Player,Language> selectedLanguage = new HashMap<>();
-    private FileHandler fileHandler;
     private DBManager dbManager;
     private LangFileLoader langFileLoader;
 
     public LanguageHandler(FileHandler fileHandler, DBManager dbManager) {
-        this.fileHandler = fileHandler;
         this.dbManager = dbManager;
         langFileLoader = new LangFileLoader(fileHandler);
     }
 
     public Language getLanguage(Player player){
-        return selectedLanguage.get(player);
+        return langFileLoader.getDefaultLanguage();//selectedLanguage.get(player);
     }
 
-    private void setLanguage(Player player, Language language){
+    public LangFileLoader getLangFileLoader(){
+        return langFileLoader;
+    }
+
+    public void setLanguage(Player player, Language language){
         if(selectedLanguage.containsKey(player)){
             selectedLanguage.replace(player, language);
         }else {
@@ -34,7 +36,7 @@ public class LanguageHandler {
 
     public void addPlayer(Player player){
         if(dbManager.hasLanguage(player)){
-            setLanguage(player,langFileLoader.getLanguage(dbManager.getLanguage(player)));
+            setLanguage(player,langFileLoader.getLanguage(dbManager.getLanguage(player).equals("default")? langFileLoader.getDefaultLanguage().getName() : dbManager.getLanguage(player)));
         }else {
             setLanguage(player,langFileLoader.getDefaultLanguage());
             dbManager.setLanguage(player,"default");

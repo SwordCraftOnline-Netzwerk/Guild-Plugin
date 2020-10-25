@@ -1,6 +1,5 @@
 package de.fynn.guild.lang;
 
-import de.fynn.guild.Main;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -11,6 +10,7 @@ public class Language {
 
     private String name;
     private HashMap<String,String> messages = new HashMap<>();
+    private HashMap<String,String> titles = new HashMap<>();
 
     public Language(String name, File file){
         this.name = name;
@@ -26,6 +26,7 @@ public class Language {
         messages.put("playerNotFound",langFile.getString("Messages.commandErrors.playerNotFound"));
         messages.put("noPermission",langFile.getString("Messages.commandErrors.noPermission"));
         messages.put("noGuild", langFile.getString("Messages.commandErrors.noGuild"));
+        messages.put("languageDoNotExist", langFile.getString("Messages.commandErrors.languageDoNotExist"));
 
         //Guild
         messages.put("guildCreated",langFile.getString("Messages.guild.guildCreated"));
@@ -40,7 +41,14 @@ public class Language {
         messages.put("invite.noSelfInvite",langFile.getString("Messages.guild.invite.noSelfInvite"));
         messages.put("invite.noInvite",langFile.getString("Messages.guild.invite.noInvite"));
         messages.put("guildClosed",langFile.getString("Messages.guild.guildClosed"));
-        messages.put("guildCreated.askGuildName",langFile.getString("Messages.guild.guildCreated.askGuildName"));
+        messages.put("guildCreated.askGuildName",langFile.getString("Messages.guild.askGuildName"));
+
+        //names
+        titles.put("inventorys.createGuild", langFile.getString("GUI.inventorys.createGuild"));
+        titles.put("inventorys.manageGuild", langFile.getString("GUI.inventorys.manageGuild"));
+        titles.put("createGuild", langFile.getString("GUI.createGuild"));
+        titles.put("leaveGuild", langFile.getString("GUI.leaveGuild"));
+        titles.put("closeGuild", langFile.getString("GUI.closeGuild"));
     }
 
     public String getName(){
@@ -49,6 +57,10 @@ public class Language {
 
     public String getMessage(String message){
         return messages.get(message);
+    }
+
+    public String getTitle(String placeholder){
+        return titles.get(placeholder);
     }
 
 }

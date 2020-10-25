@@ -7,43 +7,53 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class InventoryListener implements Listener {
+
+    private static HashMap<Player,Inventory> inventorys = new HashMap<>();
 
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent event){
         if(event.getClickedInventory()==null||event.getCurrentItem()==null){
             return;
         }
-        if(event.getView().getTitle().equals("Gilde verwalten")||event.getView().getTitle().equals("Gilde gründen")){
-            Player player = ((Player)event.getClickedInventory().getHolder());
+        Player player = ((Player)event.getClickedInventory().getHolder());
+        if(inventorys.get(player) == event.getClickedInventory()){
             if(event.getCurrentItem().getItemMeta().getDisplayName().equals("neue Gilde gründen")){
-                player.sendMessage(MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(player).getMessage("guildCreated.askGuildName")));
+                player.sendMessage(Main.getMsg(player,"guildCreated.askGuildName"));
                 PlayerChatListener.observedPlayerCreate.add(player);
+                inventorys.remove(player);
                 event.getView().close();
             }else if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Gilde verlassen")){
-                player.sendMessage(MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(player).getMessage("leaveGuild.player")));
+                player.sendMessage(Main.getMsg(player,"leaveGuild.player"));
                 for (UUID uuid:
                         Main.guildManager.getPlayerGuild(player).getMembers()) {
-                    Bukkit.getPlayer(uuid).sendMessage(MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(Bukkit.getPlayer(uuid)).getMessage("leaveGuild.guild")));
+                    Bukkit.getPlayer(uuid).sendMessage(Main.getMsg(player,Bukkit.getPlayer(uuid),"leaveGuild.guild"));
                 }
                 Main.guildManager.removeMember(player.getUniqueId().toString(),
                         Main.guildManager.getPlayerGuild(player).getGuildName());
+                inventorys.remove(player);
                 event.getView().close();
             }else if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Gilde auflösen")){
-                player.sendMessage(MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(player).getMessage("guildClosed")));
+                player.sendMessage(Main.getMsg(player,"guildClosed"));
                 for (UUID uuid:
                         Main.guildManager.getPlayerGuild(player).getMembers()) {
-                    Bukkit.getPlayer(uuid).sendMessage(MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(Bukkit.getPlayer(uuid)).getMessage("guildClosed")));
+                    Bukkit.getPlayer(uuid).sendMessage(Main.getMsg(Bukkit.getPlayer(uuid),"guildClosed"));
                 }
                 Main.guildManager.closeGuild(Main.guildManager.getPlayerGuild(player).getGuildName());
+                inventorys.remove(player);
                 event.getView().close();
             }
             event.setCancelled(true);
         }
     }
 
+    public static void addInv(Player holder, Inventory inv){
+        inventorys.put(holder, inv);
+    }
 
 }
