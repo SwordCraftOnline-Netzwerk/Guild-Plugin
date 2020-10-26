@@ -1,4 +1,4 @@
-# SAOGuild
+# Guild-Plugin
 
 [German]:
 
