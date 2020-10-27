@@ -1,6 +1,7 @@
 package de.fynn.guild.EventHandler;
 
 import de.fynn.guild.lang.LanguageHandler;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

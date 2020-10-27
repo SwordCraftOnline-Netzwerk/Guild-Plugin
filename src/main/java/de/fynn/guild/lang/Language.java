@@ -43,12 +43,18 @@ public class Language {
         messages.put("guildClosed",langFile.getString("Messages.guild.guildClosed"));
         messages.put("guildCreated.askGuildName",langFile.getString("Messages.guild.askGuildName"));
 
-        //names
+        //titles
         titles.put("inventorys.createGuild", langFile.getString("GUI.inventorys.createGuild"));
         titles.put("inventorys.manageGuild", langFile.getString("GUI.inventorys.manageGuild"));
         titles.put("createGuild", langFile.getString("GUI.createGuild"));
         titles.put("leaveGuild", langFile.getString("GUI.leaveGuild"));
         titles.put("closeGuild", langFile.getString("GUI.closeGuild"));
+        titles.put("previous", langFile.getString("GUI.previous"));
+        titles.put("next", langFile.getString("GUI.next"));
+        titles.put("kickMembers", langFile.getString("GUI.kickMembers"));
+        titles.put("back", langFile.getString("GUI.back"));
+        titles.put("inventorys.memberList", langFile.getString("GUI.inventorys.memberList"));
+        titles.put("inventorys.kickMembers", langFile.getString("GUI.inventorys.kickMembers"));
     }
 
     public String getName(){
@@ -61,6 +67,14 @@ public class Language {
 
     public String getTitle(String placeholder){
         return titles.get(placeholder);
+    }
+
+    public void addMessageValue(String key, String message){
+        messages.put(key, message);
+    }
+
+    public void addTitleValue(String key, String title){
+        titles.put(key, title);
     }
 
 }
