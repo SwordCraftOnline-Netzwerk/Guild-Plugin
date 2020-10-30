@@ -18,12 +18,12 @@ public class PlayerInteractEntityListener implements Listener {
                         (inv = GUIBuilder.buildGuildGUI(event.getPlayer(),
                         Main.guildManager.getPlayerGuild(event.getPlayer()).isLeader(event.getPlayer().getUniqueId())))
                         );
-                InventoryListener.addInv(event.getPlayer(),inv);
+                InventoryListener.addInv(event.getPlayer(),inv,InventoryType.MANAGE);
             }else {
                 event.getPlayer().openInventory(
                         (inv = GUIBuilder.buildCreateGuildGUI(event.getPlayer()))
                 );
-                InventoryListener.addInv(event.getPlayer(),inv);
+                InventoryListener.addInv(event.getPlayer(),inv,InventoryType.CREATE);
             }
         }
     }
