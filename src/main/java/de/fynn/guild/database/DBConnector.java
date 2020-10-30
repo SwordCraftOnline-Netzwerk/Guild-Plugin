@@ -13,7 +13,7 @@ public class DBConnector {
 
     public DBConnector(String[] dbinfo){
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://"+(this.dbIP = dbinfo[0]+"?useSSL=false"), (this.user = dbinfo[1]), (this.password = dbinfo[2]));
+            connection = DriverManager.getConnection("jdbc:mysql://"+(this.dbIP = dbinfo[0])+"?useSSL=false", (this.user = dbinfo[1]), (this.password = dbinfo[2]));
             statement = connection.createStatement();
         } catch (SQLException exception) {
             exception.printStackTrace();
