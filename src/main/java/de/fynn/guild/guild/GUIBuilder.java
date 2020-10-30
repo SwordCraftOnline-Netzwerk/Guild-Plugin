@@ -53,7 +53,7 @@ public class GUIBuilder {
         return inventory;
     }
 
-    public static Inventory buildKickGUI(Player player){
+    public static GuildMemberInventory buildKickGUI(Player player){
         int inventorys = Main.guildManager.getPlayerGuild(player).getMembers().size()/27;
         int page = 1;
         inventory = Bukkit.createInventory(player,27,Main.getTitle(player,"inventorys.kickMembers"));
@@ -78,7 +78,7 @@ public class GUIBuilder {
         inventory.setItem(26,next);
         inventory.setItem(22,back);
 
-        return inventory;
+        return new GuildMemberInventory(inventory,Main.guildManager.getPlayerGuild(player));
     }
 
     private static Inventory fill(Inventory inventory){
