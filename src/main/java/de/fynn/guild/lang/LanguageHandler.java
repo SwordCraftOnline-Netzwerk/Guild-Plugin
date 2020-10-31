@@ -2,6 +2,7 @@ package de.fynn.guild.lang;
 
 import de.fynn.guild.database.DBManager;
 import de.fynn.guild.system.FileHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -15,6 +16,10 @@ public class LanguageHandler {
     public LanguageHandler(FileHandler fileHandler, DBManager dbManager) {
         this.dbManager = dbManager;
         langFileLoader = new LangFileLoader(fileHandler);
+        for (Player p:
+                Bukkit.getOnlinePlayers()) {
+            addPlayer(p);
+        }
     }
 
     public Language getLanguage(Player player){

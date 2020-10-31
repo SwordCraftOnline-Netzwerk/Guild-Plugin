@@ -13,22 +13,24 @@ import java.util.UUID;
 public class DBManager {
 
     private DBConnector dbConnector;
+    private String dbName;
 
     public DBManager(String[] dbinfo){
         dbConnector = new DBConnector(dbinfo);
+        dbName = dbinfo[3];
         init();
     }
 
     private void init(){
-        dbConnector.executeSQL("CREATE SCHEMA IF NOT EXISTS guild");
-        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS guild.villagers (UUID VARCHAR(200) NOT NULL,PRIMARY KEY (UUID),UNIQUE INDEX UUID_UNIQUE (UUID ASC) VISIBLE);");
-        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS guild.guilds (guild VARCHAR(200) NOT NULL,leader VARCHAR(200) NULL,PRIMARY KEY (guild));");
-        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS guild.lang (UUID VARCHAR(200) NOT NULL,lang VARCHAR(200) NULL,PRIMARY KEY (UUID));");
+        dbConnector.executeSQL("CREATE SCHEMA IF NOT EXISTS "+dbName+";");
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+".villagers (UUID VARCHAR(150) NOT NULL,PRIMARY KEY (UUID),UNIQUE INDEX UUID_UNIQUE (UUID ASC));");
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+".guilds (guild VARCHAR(150) NOT NULL,leader VARCHAR(150) NULL,PRIMARY KEY (guild));");
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+".lang (UUID VARCHAR(150) NOT NULL,lang VARCHAR(150) NULL,PRIMARY KEY (UUID));");
     }
 
     public HashMap<String, Guild> loadGuilds(){
         HashMap<String,Guild> allGildes = new HashMap<>();
-        ResultSet result = dbConnector.getData("SELECT guild FROM guild.guilds");
+        ResultSet result = dbConnector.getData("SELECT guild FROM "+dbName+".guilds");
         List<String> guilds = new ArrayList<>();
         try{
             while(result.next()){
@@ -47,7 +49,7 @@ public class DBManager {
     }
 
     public List<UUID> loadVillagers(){
-        ResultSet result = dbConnector.getData("SELECT UUID FROM guild.villagers;");
+        ResultSet result = dbConnector.getData("SELECT UUID FROM "+dbName+".villagers;");
         List<UUID> uuids = new ArrayList<>();
         try {
             while(result.next()){
@@ -62,19 +64,19 @@ public class DBManager {
     }
 
     public void createGuild(String guild, String owner){
-        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS guild."+guild+" (UUID VARCHAR(200) NOT NULL,PRIMARY KEY (UUID),UNIQUE INDEX UUID_UNIQUE (UUID ASC) VISIBLE);");
-        dbConnector.executeSQL("INSERT INTO guild.guilds(guild,leader) VALUES ('"+guild+"','"+owner+"');");
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+"."+guild+" (UUID VARCHAR(150) NOT NULL,PRIMARY KEY (UUID),UNIQUE INDEX UUID_UNIQUE (UUID ASC));");
+        dbConnector.executeSQL("INSERT INTO "+dbName+".guilds(guild,leader) VALUES ('"+guild+"','"+owner+"');");
     }
 
     public Guild getGuild(String guild){
         try {
-            ResultSet result = dbConnector.getData("SELECT * FROM guild."+guild+";");
+            ResultSet result = dbConnector.getData("SELECT * FROM "+dbName+"."+guild+";");
             List<UUID> gildMembers = new ArrayList<>();
             while(result.next()){
                 gildMembers.add(UUID.fromString(result.getString(1)));
             }
             result.close();
-            result = dbConnector.getData("SELECT leader FROM guild.guilds WHERE guild = '"+guild+"';");
+            result = dbConnector.getData("SELECT leader FROM "+dbName+".guilds WHERE guild = '"+guild+"';");
             String leader ="";
             while(result.next()){
                 leader = result.getString(1);
@@ -89,28 +91,28 @@ public class DBManager {
     }
 
     public void deleteGuild(String guild){
-        dbConnector.executeSQL("DROP TABLE guild."+guild+";");
-        dbConnector.executeSQL("DELETE FROM guild.guilds WHERE guild = '"+guild+"';");
+        dbConnector.executeSQL("DROP TABLE "+dbName+"."+guild+";");
+        dbConnector.executeSQL("DELETE FROM "+dbName+".guilds WHERE guild = '"+guild+"';");
     }
 
     public void addGuildMember(String guild, String uuid){
-        dbConnector.executeSQL("INSERT INTO guild."+guild+"(UUID) VALUES ("+uuid+");");
+        dbConnector.executeSQL("INSERT INTO "+dbName+"."+guild+"(UUID) VALUES ("+uuid+");");
     }
 
     public void removeGuildMember(String guild, String uuid){
-        dbConnector.executeSQL("DELETE FROM guild."+guild+" WHERE UUID = '"+uuid+"';");
+        dbConnector.executeSQL("DELETE FROM "+dbName+"."+guild+" WHERE UUID = '"+uuid+"';");
     }
 
     public void addVillager(String uuid){
-        dbConnector.executeSQL("INSERT INTO guild.villagers(UUID) VALUES ('"+uuid+"');");
+        dbConnector.executeSQL("INSERT INTO "+dbName+".villagers(UUID) VALUES ('"+uuid+"');");
     }
 
     public void removeVillager(String uuid){
-        dbConnector.executeSQL("DELETE FROM guild.villagers WHERE UUID = '"+uuid+"';");
+        dbConnector.executeSQL("DELETE FROM "+dbName+".villagers WHERE UUID = '"+uuid+"';");
     }
 
     public boolean hasLanguage(Player player){
-        ResultSet result = dbConnector.getData("SELECT EXISTS(SELECT * FROM guild.lang WHERE UUID = '"+player.getUniqueId().toString()+"');");
+        ResultSet result = dbConnector.getData("SELECT EXISTS(SELECT * FROM "+dbName+".lang WHERE UUID = '"+player.getUniqueId().toString()+"');");
         try {
             if(!result.next()){
                 return false;
@@ -123,7 +125,7 @@ public class DBManager {
     }
 
     public String getLanguage(Player player){
-        ResultSet result = dbConnector.getData("SELECT lang FROM guild.lang WHERE UUID = '"+player.getUniqueId().toString()+"';");
+        ResultSet result = dbConnector.getData("SELECT lang FROM "+dbName+".lang WHERE UUID = '"+player.getUniqueId().toString()+"';");
         try {
             if(!result.next()){
                 return "default";
@@ -137,9 +139,9 @@ public class DBManager {
 
     public void setLanguage(Player player, String language){
         if(hasLanguage(player)){
-            dbConnector.executeSQL("UPDATE guild.lang SET lang = '"+language+"' WHERE UUID = '"+player.getUniqueId().toString()+"';");
+            dbConnector.executeSQL("UPDATE "+dbName+".lang SET lang = '"+language+"' WHERE UUID = '"+player.getUniqueId().toString()+"';");
         }else {
-            dbConnector.executeSQL("INSERT INTO guild.lang(UUID,lang) VALUES ('"+player.getUniqueId().toString()+"','"+language+"');");
+            dbConnector.executeSQL("INSERT INTO "+dbName+".lang(UUID,lang) VALUES ('"+player.getUniqueId().toString()+"','"+language+"');");
         }
     }
 

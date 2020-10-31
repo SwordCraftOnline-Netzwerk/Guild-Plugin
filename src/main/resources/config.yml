@@ -1,13 +1,15 @@
 #
 #
 #
-Database:
+MySQL:
+  DB_Name:
+    'guild'
   IP:
-    'localhost:3306'
+    'billoserver.hopefuls.de:3306'
   User:
     'root'
   Password:
-    'Fynn2211'
+    'hope123'
 #
 #
 #

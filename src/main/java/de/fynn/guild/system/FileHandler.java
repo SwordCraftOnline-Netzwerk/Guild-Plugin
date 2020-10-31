@@ -14,9 +14,10 @@ public class FileHandler {
 
     public String[] getDBInfo(){
         return new String[]{
-                cfg.getString("Database.IP"),
-                cfg.getString("Database.User"),
-                cfg.getString("Database.Password")};
+                cfg.getString("MySQL.IP"),
+                cfg.getString("MySQL.User"),
+                cfg.getString("MySQL.Password"),
+                cfg.getString("MySQL.DB_Name")};
     }
 
     public String getDefaultLanguage(){

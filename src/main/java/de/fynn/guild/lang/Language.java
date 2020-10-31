@@ -55,6 +55,8 @@ public class Language {
         titles.put("back", langFile.getString("GUI.back"));
         titles.put("inventorys.memberList", langFile.getString("GUI.inventorys.memberList"));
         titles.put("inventorys.kickMembers", langFile.getString("GUI.inventorys.kickMembers"));
+        titles.put("inventorys.listMembers", langFile.getString("GUI.inventorys.listMembers"));
+        titles.put("listMembers", langFile.getString("GUI.listMembers"));
     }
 
     public String getName(){

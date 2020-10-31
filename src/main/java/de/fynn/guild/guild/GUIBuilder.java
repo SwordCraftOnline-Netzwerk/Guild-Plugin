@@ -47,16 +47,21 @@ public class GUIBuilder {
             meta = kickMembers.getItemMeta();
             meta.setDisplayName(Main.getTitle(player,"kickMembers"));
             kickMembers.setItemMeta(meta);
-            inventory.setItem(13,kickMembers);
+            inventory.setItem(12,kickMembers);
+            ItemStack listMembers = new ItemStack(Material.OBSERVER);
+            meta = listMembers.getItemMeta();
+            meta.setDisplayName(Main.getTitle(player,"listMembers"));
+            listMembers.setItemMeta(meta);
+            inventory.setItem(14,listMembers);
         }
         inventory.setItem(26,leave);
         return inventory;
     }
 
-    public static GuildMemberInventory buildKickGUI(Player player){
+    public static GuildMemberInventory buildMembersGUI(Player player, String title, boolean showLeader){
         int inventorys = Main.guildManager.getPlayerGuild(player).getMembers().size()/27;
         int page = 1;
-        inventory = Bukkit.createInventory(player,27,Main.getTitle(player,"inventorys.kickMembers"));
+        inventory = Bukkit.createInventory(player,27,Main.getTitle(player,title));
         inventory = fill(inventory);
 
         ItemStack previous = new ItemStack(Material.RED_WOOL);
@@ -78,7 +83,11 @@ public class GUIBuilder {
         inventory.setItem(26,next);
         inventory.setItem(22,back);
 
-        return new GuildMemberInventory(inventory,Main.guildManager.getPlayerGuild(player));
+        return new GuildMemberInventory(inventory,Main.guildManager.getPlayerGuild(player),showLeader);
+    }
+
+    private static PlayerListInventory buildInviteGUI(){
+        return null;
     }
 
     private static Inventory fill(Inventory inventory){

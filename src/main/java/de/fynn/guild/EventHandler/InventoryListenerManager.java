@@ -60,9 +60,17 @@ public class InventoryListenerManager {
         //kick
         else if(itemName.equals(Main.getTitle(player,"kickMembers"))){
             closeInv(event);
-            GuildMemberInventory inventory = GUIBuilder.buildKickGUI(player);
+            GuildMemberInventory inventory = GUIBuilder.buildMembersGUI(player,"inventorys.kickMembers", false);
             player.openInventory(inventory.getInventory());
             InventoryListener.addInv(player,inventory.getInventory(),InventoryType.KICK);
+            InventoryListener.addGuildMemberInventory(player,inventory);
+        }
+        //list
+        else if(itemName.equals(Main.getTitle(player,"listMembers"))){
+            closeInv(event);
+            GuildMemberInventory inventory = GUIBuilder.buildMembersGUI(player,"inventorys.listMembers",true);
+            player.openInventory(inventory.getInventory());
+            InventoryListener.addInv(player,inventory.getInventory(),InventoryType.LIST_MEMBERS);
             InventoryListener.addGuildMemberInventory(player,inventory);
         }
     }
@@ -72,13 +80,13 @@ public class InventoryListenerManager {
         String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
         if(itemName.equals(Main.getTitle(player,"next"))){
             if(guildInv.hasNextPage()){
-                event.getView().close();
+                closeInv(event);
                 guildInv.nextPage();
                 player.openInventory(guildInv.getInventory());
             }
         }else if(itemName.equals(Main.getTitle(player,"previous"))){
             if(guildInv.hasPreviousPage()){
-                event.getView().close();
+                closeInv(event);
                 guildInv.previousPage();
                 player.openInventory(guildInv.getInventory());
             }
@@ -90,7 +98,9 @@ public class InventoryListenerManager {
         }else {
             Main.guildManager.removeMember(Bukkit.getPlayer(itemName).getUniqueId().toString(),Main.guildManager.getPlayerGuild(player).getGuildName());
             closeInv(event);
+            return;
         }
+        InventoryListener.addGuildMemberInventory(player,guildInv);
     }
 
     private void onInviteGUI(Player player, Inventory inv, InventoryClickEvent event){
@@ -98,7 +108,26 @@ public class InventoryListenerManager {
     }
 
     private void onListMembersGUI(Player player, Inventory inv, InventoryClickEvent event){
-
+        GuildMemberInventory guildInv = InventoryListener.getGuildMemberInv(player);
+        String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
+        if(itemName.equals(Main.getTitle(player,"next"))){
+            if(guildInv.hasNextPage()){
+                closeInv(event);
+                guildInv.nextPage();
+                player.openInventory(guildInv.getInventory());
+            }
+        }else if(itemName.equals(Main.getTitle(player,"previous"))){
+            if(guildInv.hasPreviousPage()){
+                closeInv(event);
+                guildInv.previousPage();
+                player.openInventory(guildInv.getInventory());
+            }
+        }else if(itemName.equals(Main.getTitle(player,"back"))) {
+            closeInv(event);
+            Inventory inventory = GUIBuilder.buildGuildGUI(player, Main.guildManager.isLeader(player));
+            player.openInventory(inventory);
+            InventoryListener.addInv(player, inventory, InventoryType.MANAGE);
+        }
     }
 
     private void closeInv(InventoryClickEvent event){

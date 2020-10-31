@@ -13,31 +13,24 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.*;
 
-public class GuildMemberInventory implements Inventory {
+public class PlayerListInventory implements Inventory {
 
     private Inventory inventory;
     private int currentPage = 1;
     private int avaiablePages;
     private HashMap<Integer,List<Player>> pages = new HashMap<>();
 
-    public GuildMemberInventory(Inventory inventory, Guild guild, boolean showLeader){
+    public PlayerListInventory(Inventory inventory){
         this.inventory = inventory;
-        List<UUID> guildMembers = new ArrayList<>();
-        Collections.copy(guildMembers,guild.getMembers());
-        if(showLeader){
-            guildMembers.add(guild.getLeader());
-        }
-        if(guildMembers.isEmpty()){
-            return;
-        }
-        avaiablePages = guildMembers.size()%9!=0?guildMembers.size()/9+1:guildMembers.size()/9;
+        Player[] player = Bukkit.getOnlinePlayers().toArray(new Player[0]);
+        avaiablePages = player.length%9!=0?player.length/9+1:player.length/9;
         for (int i = 0; i < avaiablePages; i++) {
             List<Player> members = new ArrayList<>();
             for (int j = 0; j < 9; j++) {
-                if((i+1)*(j+1)>guildMembers.size()){
+                if((i+1)*(j+1)>player.length){
                     break;
                 }
-                members.add(Bukkit.getPlayer(guildMembers.get(i*j)));
+                members.add(Bukkit.getPlayer(player[i*j].getUniqueId()));
             }
             pages.put(i+1,members);
         }
