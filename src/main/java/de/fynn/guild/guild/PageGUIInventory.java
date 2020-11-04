@@ -46,4 +46,8 @@ public class PageGUIInventory extends GUIInventory{
         }
     }
 
+    public List<InventoryPage> getPages(){
+        return pages;
+    }
+
 }

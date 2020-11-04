@@ -23,7 +23,9 @@ public class PageBuilder {
                 if(!players.isEmpty()){
                     GUIItem item = new GUIItem(new ItemStack(Material.PLAYER_HEAD));
                     SkullMeta meta = (SkullMeta) item.getItemMeta();
-                    meta.setOwningPlayer(players.remove());
+                    Player player = players.remove();
+                    meta.setDisplayName(player.getDisplayName());
+                    meta.setOwningPlayer(player);
                     item.setItemMeta(meta);
                     items[i] = item;
                 }

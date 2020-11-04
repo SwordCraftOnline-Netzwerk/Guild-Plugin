@@ -7,7 +7,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public class GUIBuilder {
@@ -57,7 +59,8 @@ public class GUIBuilder {
             kick.addClickAction(new ClickAction() {
                 @Override
                 public boolean execute(Player player) {
-                    return true;
+                    player.openInventory(GUIBuilder.buildKickMembersGUI(player,Main.guildManager.getPlayerGuild(player)).getInventory());
+                    return false;
                 }
             });
             guiInventory.setItem(kick,12);
@@ -66,7 +69,7 @@ public class GUIBuilder {
             listMembers.addClickAction(new ClickAction() {
                 @Override
                 public boolean execute(Player player) {
-                    player.openInventory(GUIBuilder.buildMemberListGUI(player, Bukkit.getOnlinePlayers()).getInventory());
+                    player.openInventory(GUIBuilder.buildMemberListGUI(player, Main.guildManager.getPlayerGuild(player)).getInventory());
                     return false;
                 }
             });
@@ -76,9 +79,77 @@ public class GUIBuilder {
         return guiInventory;
     }
 
-    public static PageGUIInventory buildMemberListGUI(Player player,Collection<? extends Player> players){
+    public static PageGUIInventory buildMemberListGUI(Player player,Guild guild){
 
-        PageGUIInventory guiInventory = new PageGUIInventory(18,Main.getTitle(player,"inventorys.listMembers"), PageBuilder.buildPagesFromPlayer(players));
+        List<Player> members = new ArrayList<>();
+        members.add(Bukkit.getPlayer(guild.getLeader()));
+        for (UUID uuid:
+                guild.getMembers()) {
+            members.add(Bukkit.getPlayer(uuid));
+        }
+        PageGUIInventory guiInventory = new PageGUIInventory(18,Main.getTitle(player,"inventorys.listMembers"), PageBuilder.buildPagesFromPlayer(members));
+
+        GUIItem previous = new GUIItem(new ItemStack(Material.RED_WOOL),Main.getTitle(player,"previous"));
+        previous.addClickAction(new ClickAction() {
+            @Override
+            public boolean execute(Player player) {
+                guiInventory.previous();
+                return false;
+            }
+        });
+
+        GUIItem next = new GUIItem(new ItemStack(Material.GREEN_WOOL),Main.getTitle(player,"next"));
+        next.addClickAction(new ClickAction() {
+            @Override
+            public boolean execute(Player player) {
+                guiInventory.next();
+                return false;
+            }
+        });
+
+        GUIItem back = new GUIItem(new ItemStack(Material.BARRIER),Main.getTitle(player,"back"));
+        back.addClickAction(new ClickAction() {
+            @Override
+            public boolean execute(Player player) {
+                player.openInventory(GUIBuilder.buildGuildGUI(player,Main.guildManager.isLeader(player)).getInventory());
+                return false;
+            }
+        });
+
+        guiInventory.setItem(previous,9);
+        guiInventory.setItem(next,17);
+        guiInventory.setItem(back,13);
+
+        return guiInventory;
+    }
+
+    public static PageGUIInventory buildKickMembersGUI(Player player, Guild guild){
+        List<Player> members = new ArrayList<>();
+        members.add(Bukkit.getPlayer(guild.getLeader()));
+        for (UUID uuid:
+                guild.getMembers()) {
+            members.add(Bukkit.getPlayer(uuid));
+        }
+        PageGUIInventory guiInventory = new PageGUIInventory(18,Main.getTitle(player,"inventorys.kickMembers"), PageBuilder.buildPagesFromPlayer(members));
+        for (InventoryPage page:
+             guiInventory.getPages()) {
+            for (GUIItem item:
+                    page.getItems()) {
+                if(item!=null){
+                    item.addClickAction(new ClickAction() {
+                        @Override
+                        public boolean execute(Player player) {
+                            Main.guildManager.removeMember(Bukkit.getPlayer(item.getItemMeta().getDisplayName()).getUniqueId().toString(),guild.getGuildName());
+                            if(Main.guildManager.hasGuild(player)){
+                                player.openInventory(GUIBuilder.buildKickMembersGUI(player, Main.guildManager.getPlayerGuild(player)).getInventory());
+                                return false;
+                            }
+                            return true;
+                        }
+                    });
+                }
+            }
+        }
 
         GUIItem previous = new GUIItem(new ItemStack(Material.RED_WOOL),Main.getTitle(player,"previous"));
         previous.addClickAction(new ClickAction() {
