@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PlayerChatListener implements Listener {
 
-    protected static List<Player> observedPlayerCreate = new ArrayList();
+    public static List<Player> observedPlayerCreate = new ArrayList();
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event){
