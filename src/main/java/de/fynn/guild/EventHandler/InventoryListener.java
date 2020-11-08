@@ -1,8 +1,8 @@
 package de.fynn.guild.EventHandler;
 
-import de.fynn.guild.guild.ClickAction;
-import de.fynn.guild.guild.GUIInventory;
-import de.fynn.guild.guild.GUIItem;
+import de.fynn.guild.guild.gui.ClickAction;
+import de.fynn.guild.guild.gui.GUIInventory;
+import de.fynn.guild.guild.gui.guiItems.GUIItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

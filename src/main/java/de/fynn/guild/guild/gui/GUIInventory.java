@@ -1,5 +1,6 @@
-package de.fynn.guild.guild;
+package de.fynn.guild.guild.gui;
 
+import de.fynn.guild.guild.gui.guiItems.GUIItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

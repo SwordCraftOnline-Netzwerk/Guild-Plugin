@@ -5,14 +5,9 @@ api-version: 1.16
 authors: [ Fynn ]
 prefix: §9[§bSwordCraftOnline§9]§r§7 Message
 commands:
-  guildVillager:
+  guildManager:
     description: ""
-    usage: /guildVillager create [Name]
-  guild:
-    description: ""
-    usage: /guild invite <Player>
-           /guild invite accept
-           /guild kick <Player>
+    usage: /guildManager create [Name]
   guildLanguage:
     description: ""
     usage: /guildLanguage <Language> z.B. de_DE

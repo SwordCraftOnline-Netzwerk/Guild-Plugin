@@ -1,4 +1,4 @@
-package de.fynn.guild.guild;
+package de.fynn.guild.guild.gui;
 
 import org.bukkit.entity.Player;
 

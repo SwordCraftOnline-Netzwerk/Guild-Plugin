@@ -1,4 +1,6 @@
-package de.fynn.guild.guild;
+package de.fynn.guild.guild.gui;
+
+import de.fynn.guild.guild.gui.guiItems.GUIItem;
 
 public class InventoryPage {
 

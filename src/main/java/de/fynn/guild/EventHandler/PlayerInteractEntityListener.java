@@ -1,11 +1,11 @@
 package de.fynn.guild.EventHandler;
 
-import de.fynn.guild.guild.GUIBuilder;
 import de.fynn.guild.Main;
+import de.fynn.guild.guild.gui.guis.MyGuild;
+import de.fynn.guild.guild.gui.guis.NoGuild;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.Inventory;
 
 public class PlayerInteractEntityListener implements Listener {
 
@@ -13,12 +13,13 @@ public class PlayerInteractEntityListener implements Listener {
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
         if(Main.villagerManager.containsVillager(event.getRightClicked().getUniqueId())){
             if(Main.guildManager.hasGuild(event.getPlayer())){
-                event.getPlayer().openInventory(
-                        GUIBuilder.buildGuildGUI(event.getPlayer(),
-                        Main.guildManager.getPlayerGuild(event.getPlayer()).isLeader(event.getPlayer().getUniqueId())).getInventory());
+                event.getPlayer().openInventory(MyGuild.getInventory(event.getPlayer(), Main.guildManager.getPlayerGuild(event.getPlayer())).getInventory());
             }else {
-                event.getPlayer().openInventory(
-                        GUIBuilder.buildCreateGuildGUI(event.getPlayer()).getInventory());
+                if(!PlayerChatListener.observedPlayerCreate.contains(event.getPlayer())){
+                    event.getPlayer().openInventory(NoGuild.getInventory(event.getPlayer()).getInventory());
+                }else {
+                    event.getPlayer().sendMessage(Main.getMsg(event.getPlayer(),"noDoubleGuildCreate"));
+                }
             }
         }
     }

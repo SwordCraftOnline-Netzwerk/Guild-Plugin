@@ -2,7 +2,6 @@ package de.fynn.guild;
 
 import de.fynn.guild.EventHandler.*;
 import de.fynn.guild.cmd.CreateGuildVillager;
-import de.fynn.guild.cmd.GuildCommands;
 import de.fynn.guild.cmd.LanguageCMD;
 import de.fynn.guild.database.DBManager;
 import de.fynn.guild.guild.GuildManager;
@@ -15,6 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class Main extends JavaPlugin {
 
     private static Main plugin;
@@ -23,6 +25,7 @@ public final class Main extends JavaPlugin {
     private static DBManager dbManager;
     public static GuildManager guildManager;
     public static VillagerManager villagerManager;
+    public static List<Player> guildlessPlayer = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -39,8 +42,7 @@ public final class Main extends JavaPlugin {
         plManager.registerEvents(new PlayerChatListener(),this);
         plManager.registerEvents(new EntityDeathListener(),this);
         plManager.registerEvents(new JoinListener(languageHandler),this);
-        getCommand("guildVillager").setExecutor(new CreateGuildVillager());
-        getCommand("guild").setExecutor(new GuildCommands());
+        getCommand("guildManager").setExecutor(new CreateGuildVillager());
         getCommand("guildLanguage").setExecutor(new LanguageCMD());
     }
 
@@ -63,6 +65,14 @@ public final class Main extends JavaPlugin {
 
     public static String getTitle(Player player, String title){
         return  MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(player).getTitle(title));
+    }
+
+    public static String getTitle(Player player,Player target, String title){
+        return  MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(target).getTitle(title));
+    }
+
+    public static DBManager getDbManager(){
+        return dbManager;
     }
 
 }

@@ -1,5 +1,6 @@
-package de.fynn.guild.guild;
+package de.fynn.guild.guild.gui.guiItems;
 
+import de.fynn.guild.guild.gui.ClickAction;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -34,6 +35,10 @@ public class GUIItem extends ItemStack {
     public GUIItem addClickAction(ClickAction action){
         actions.add(action);
         return this;
+    }
+
+    public void removeClickAction(ClickAction action){
+        actions.remove(action);
     }
 
     public List<ClickAction> getActions(){

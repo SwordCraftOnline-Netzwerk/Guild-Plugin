@@ -42,21 +42,54 @@ public class Language {
         messages.put("invite.noInvite",langFile.getString("Messages.guild.invite.noInvite"));
         messages.put("guildClosed",langFile.getString("Messages.guild.guildClosed"));
         messages.put("guildCreated.askGuildName",langFile.getString("Messages.guild.askGuildName"));
+        messages.put("noDoubleGuildCreate",langFile.getString("Messages.guild.noDoubleGuildCreate"));
 
         //titles
-        titles.put("inventorys.createGuild", langFile.getString("GUI.inventorys.createGuild"));
-        titles.put("inventorys.manageGuild", langFile.getString("GUI.inventorys.manageGuild"));
-        titles.put("createGuild", langFile.getString("GUI.createGuild"));
-        titles.put("leaveGuild", langFile.getString("GUI.leaveGuild"));
-        titles.put("closeGuild", langFile.getString("GUI.closeGuild"));
-        titles.put("previous", langFile.getString("GUI.previous"));
-        titles.put("next", langFile.getString("GUI.next"));
-        titles.put("kickMembers", langFile.getString("GUI.kickMembers"));
-        titles.put("back", langFile.getString("GUI.back"));
-        titles.put("inventorys.memberList", langFile.getString("GUI.inventorys.memberList"));
-        titles.put("inventorys.kickMembers", langFile.getString("GUI.inventorys.kickMembers"));
-        titles.put("inventorys.listMembers", langFile.getString("GUI.inventorys.listMembers"));
-        titles.put("listMembers", langFile.getString("GUI.listMembers"));
+        titles.put("inventorys.noGuild", langFile.getString("Titles.inventorys.noGuild"));
+        titles.put("inventorys.myGuild", langFile.getString("Titles.inventorys.myGuild"));
+        titles.put("inventorys.inviteMember", langFile.getString("Titles.inventorys.inviteMember"));
+        titles.put("inventorys.manageGuild", langFile.getString("Titles.inventorys.manageGuild"));
+        titles.put("inventorys.listMembers", langFile.getString("Titles.inventorys.listMembers"));
+        titles.put("inventorys.invites", langFile.getString("Titles.inventorys.invites"));
+        titles.put("inventorys.manageAttributes", langFile.getString("Titles.inventorys.manageAttributes"));
+        titles.put("inventorys.manageMember", langFile.getString("Titles.inventorys.manageMember"));
+        titles.put("inventorys.manageRole", langFile.getString("Titles.inventorys.manageRole"));
+        titles.put("inventorys.manageRoles", langFile.getString("Titles.inventorys.manageRoles"));
+        titles.put("inventorys.memberRole", langFile.getString("Titles.inventorys.memberRole"));
+        titles.put("inventorys.createRole", langFile.getString("Titles.inventorys.createRole"));
+        titles.put("items.createGuild", langFile.getString("Titles.items.createGuild"));
+        titles.put("items.previous", langFile.getString("Titles.items.previous"));
+        titles.put("items.next", langFile.getString("Titles.items.next"));
+        titles.put("items.getInvites", langFile.getString("Titles.items.getInvites"));
+        titles.put("items.leaveGuild", langFile.getString("Titles.items.leaveGuild"));
+        titles.put("items.closeGuild", langFile.getString("Titles.items.closeGuild"));
+        titles.put("items.back", langFile.getString("Titles.items.back"));
+        titles.put("items.kick", langFile.getString("Titles.items.kick"));
+        titles.put("items.manageRole", langFile.getString("Titles.items.manageRole"));
+        titles.put("items.invites", langFile.getString("Titles.items.invites"));
+        titles.put("items.invite", langFile.getString("Titles.items.invite"));
+        titles.put("items.manageGuild", langFile.getString("Titles.items.manageGuild"));
+        titles.put("items.manageRoles", langFile.getString("Titles.items.manageRoles"));
+        titles.put("items.manageAttributes", langFile.getString("Titles.items.manageAttributes"));
+        titles.put("items.listMembers", langFile.getString("Titles.items.listMembers"));
+        titles.put("items.increasePriority", langFile.getString("Titles.items.increasePriority"));
+        titles.put("items.decreasePriority", langFile.getString("Titles.items.decreasePriority"));
+        titles.put("items.saveRole", langFile.getString("Titles.items.saveRole"));
+        titles.put("items.createRole", langFile.getString("Titles.items.createRole"));
+        titles.put("items.deleteRole", langFile.getString("Titles.items.deleteRole"));
+        titles.put("items.renameRole", langFile.getString("Titles.items.renameRole"));
+        titles.put("items.renameGuild", langFile.getString("Titles.items.renameGuild"));
+        titles.put("permissions.manageMembers", langFile.getString("Titles.permissions.manageMembers"));
+        titles.put("permissions.manageGuild", langFile.getString("Titles.permissions.manageGuild"));
+        titles.put("permissions.invite", langFile.getString("Titles.permissions.invite"));
+        titles.put("permissions.kick", langFile.getString("Titles.permissions.kick"));
+        titles.put("permissions.acceptRequest", langFile.getString("Titles.permissions.acceptRequest"));
+        titles.put("permissions.role", langFile.getString("Titles.permissions.role"));
+        titles.put("permissions.close", langFile.getString("Titles.permissions.close"));
+        titles.put("permissions.manageMoney", langFile.getString("Titles.permissions.manageMoney"));
+        titles.put("permissions.manageRole", langFile.getString("Titles.permissions.manageRole"));
+        titles.put("permissions.manageGuildAttributes", langFile.getString("Titles.permissions.manageGuildAttributes"));
+        titles.put("permissions.war", langFile.getString("Titles.permissions.war"));
     }
 
     public String getName(){

@@ -1,11 +1,14 @@
-package de.fynn.guild.guild;
+package de.fynn.guild.guild.gui;
 
+import de.fynn.guild.guild.gui.guiItems.GUIItem;
+import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PageGUIInventory extends GUIInventory{
+public class PageGUIInventory extends GUIInventory {
 
     private List<InventoryPage> pages = new ArrayList<>();
     private int page = 0;
@@ -24,7 +27,7 @@ public class PageGUIInventory extends GUIInventory{
     }
 
     public Inventory next(){
-        page = page+1<pages.size()-1 ? page+1 : page;
+        page = page+1<pages.size() ? page+1 : page;
         loadPage();
         return getInventory();
     }
@@ -42,7 +45,7 @@ public class PageGUIInventory extends GUIInventory{
     private void loadPage(){
         InventoryPage currentPage = pages.get(page);
         for (int i = 0; i < currentPage.getSize(); i++) {
-            setItem(currentPage.getItem(i),i);
+            setItem(currentPage.getItem(i)==null?new GUIItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)," "):currentPage.getItem(i),i);
         }
     }
 
