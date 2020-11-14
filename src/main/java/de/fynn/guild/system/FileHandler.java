@@ -23,4 +23,17 @@ public class FileHandler {
     public String getDefaultLanguage(){
         return cfg.getString("Language.Default");
     }
+
+    public String getGuildmasterName(){
+        return cfg.getString("Guilds.guildmaster");
+    }
+
+    public double getGuildPrize(){
+        return cfg.getDouble("Guilds.prize");
+    }
+
+    public int getMaxGuildSize(){
+        return cfg.getInt("Guilds.maxMembers");
+    }
+
 }

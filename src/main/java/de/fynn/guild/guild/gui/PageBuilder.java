@@ -6,6 +6,7 @@ import de.fynn.guild.guild.gui.guiItems.GUIItem;
 import de.fynn.guild.guild.gui.guiItems.PlayerHead;
 import de.fynn.guild.guild.permissions.GuildRole;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,7 +46,7 @@ public class PageBuilder {
                 for (int i = 0; i < 9; i++) {
                     if(!invites.isEmpty()){
                         Invite invite = invites.remove(0);
-                        GUIItem item = new GUIItem(new PlayerHead(Bukkit.getPlayer(invite.getPlayerName())),invite.getGuild().getGuildName());
+                        GUIItem item = new GUIItem(new ItemStack(Material.BOOK),invite.getGuild().getGuildName());
                         items[i] = item;
                     }
                 }

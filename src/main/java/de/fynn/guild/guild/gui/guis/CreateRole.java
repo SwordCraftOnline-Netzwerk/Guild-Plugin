@@ -203,10 +203,11 @@ public class CreateRole {
         higher.addClickAction(new ClickAction() {
             @Override
             public boolean execute(Player player) {
-                if(Integer.parseInt(roleManager.getRole(player).getPriority())<higher.getValue()){
+                if(Integer.parseInt(roleManager.getRole(player).getPriority())>higher.getValue()){
                     if(higher.getValue()<99){
                         higher.changeValue();
-                        higher.synchroValue(lower);
+                        lower.setValue(higher.getValue());
+                        player.openInventory(guiInventory.getInventory());
                     }
                 }
                 return false;
@@ -218,7 +219,8 @@ public class CreateRole {
             public boolean execute(Player player) {
                 if(lower.getValue()>0){
                     lower.changeValue();
-                    lower.synchroValue(higher);
+                    higher.setValue(lower.getValue());
+                    player.openInventory(guiInventory.getInventory());
                 }
                 return false;
             }
@@ -242,10 +244,12 @@ public class CreateRole {
                 StringBuilder builder = new StringBuilder();
                 for (YesNoButton button:
                      buttons) {
-                    builder.append(button.getState()?1:0);
+                    builder.append(button.getState()?"1":"0");
                 }
                 builder.append(higher.getValue()<10?"0"+higher.getValue():higher.getValue());
+                builder.append('0');
                 PlayerChatListener.observedPlayerRole.put(player, builder.toString());
+                player.sendMessage(Main.getMsg(player,"askRoleName"));
                 return true;
             }
         });

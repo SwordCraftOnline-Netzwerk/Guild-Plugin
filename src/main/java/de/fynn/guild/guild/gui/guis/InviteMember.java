@@ -9,6 +9,7 @@ import de.fynn.guild.guild.gui.guiItems.PreviousButton;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
@@ -25,7 +26,8 @@ public class InviteMember{
                     item.addClickAction(new ClickAction() {
                         @Override
                         public boolean execute(Player player) {
-                            Main.guildManager.invite(player,Bukkit.getPlayer(item.getItemMeta().getDisplayName()),Main.guildManager.getPlayerGuild(player).getGuildName());
+                            Player target = Bukkit.getPlayer(item.getItemMeta().getDisplayName());
+                            Main.guildManager.invite(player,target,Main.guildManager.getPlayerGuild(player).getGuildName());
                             return false;
                         }
                     });
@@ -41,6 +43,11 @@ public class InviteMember{
                 return false;
             }
         });
+        if(guiInventory.getPageNumber()>0){
+            guiInventory.setItem(previous,9);
+        }else{
+            guiInventory.setItem(new GUIItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)," "),9);
+        }
 
         GUIItem next = new NextButton(player);
         next.addClickAction(new ClickAction() {
@@ -50,6 +57,11 @@ public class InviteMember{
                 return false;
             }
         });
+        if(guiInventory.getPageNumber()<guiInventory.getPages().size()-1){
+            guiInventory.setItem(next,17);
+        }else {
+            guiInventory.setItem(new GUIItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)," "),17);
+        }
 
         GUIItem back = new BackButton(player);
         back.addClickAction(new ClickAction() {
@@ -60,8 +72,6 @@ public class InviteMember{
             }
         });
 
-        guiInventory.setItem(previous,9);
-        guiInventory.setItem(next,17);
         guiInventory.setItem(back,13);
 
         return guiInventory;

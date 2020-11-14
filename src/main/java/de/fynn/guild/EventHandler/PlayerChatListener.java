@@ -38,13 +38,19 @@ public class PlayerChatListener implements Listener {
             }
             Main.guildManager.renameGuild(Main.guildManager.getPlayerGuild(event.getPlayer()),event.getMessage());
             observedPlayerRename.remove(event.getPlayer());
+            event.getPlayer().sendMessage(Main.getMsg(event.getPlayer(),"renameGuildFinish"));
             event.setCancelled(true);
         }else if(observedPlayerRole.containsKey(event.getPlayer())){
             Main.guildManager.getPlayerGuild(event.getPlayer()).getRoleManager().createRole(new GuildRole(event.getMessage(),observedPlayerRole.get(event.getPlayer())));
+            event.getPlayer().sendMessage(Main.guildManager.getPlayerGuild(event.getPlayer()).getRoleManager().getRolePlaceholder(Main.getMsg(event.getPlayer(),"roleCreated"),
+                    Main.guildManager.getPlayerGuild(event.getPlayer()).getRoleManager().getLoader().getRole(event.getMessage())));
             observedPlayerRole.remove(event.getPlayer());
             event.setCancelled(true);
         }else if(observedPlayerRoleRename.containsKey(event.getPlayer())){
             Main.guildManager.getPlayerGuild(event.getPlayer()).getRoleManager().renameRole(observedPlayerRoleRename.get(event.getPlayer()),event.getMessage());
+            event.getPlayer().sendMessage(Main.guildManager.getPlayerGuild(event.getPlayer()).getRoleManager().getRolePlaceholder(Main.getMsg(event.getPlayer(),"renameRoleFinish"),observedPlayerRoleRename.get(event.getPlayer())));
+            observedPlayerRoleRename.remove(event.getPlayer());
+            event.setCancelled(true);
         }
     }
 

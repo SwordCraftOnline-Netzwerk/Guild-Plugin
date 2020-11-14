@@ -5,7 +5,7 @@ import de.fynn.guild.guild.permissions.GuildRole;
 public class DefaultRole extends GuildRole {
 
     public DefaultRole() {
-        super("default","0000000000000");
+        super("default","00000000000001");
     }
 
 }

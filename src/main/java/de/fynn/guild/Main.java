@@ -5,6 +5,7 @@ import de.fynn.guild.cmd.CreateGuildVillager;
 import de.fynn.guild.cmd.LanguageCMD;
 import de.fynn.guild.database.DBManager;
 import de.fynn.guild.guild.GuildManager;
+import de.fynn.guild.guild.permissions.GuildRole;
 import de.fynn.guild.lang.LanguageHandler;
 import de.fynn.guild.lang.MessagePlaceholder;
 import de.fynn.guild.system.FileHandler;
@@ -30,7 +31,6 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-
         fileHandler = new FileHandler();
         dbManager = new DBManager(fileHandler.getDBInfo());
         languageHandler = new LanguageHandler(fileHandler,dbManager);
@@ -56,11 +56,11 @@ public final class Main extends JavaPlugin {
     }
 
     public static String getMsg(Player player, String msg){
-        return MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(player).getMessage(msg));
+        return "§9§l[§bSwordCraftOnline§9] §r"+MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(player).getMessage(msg));
     }
 
     public static String getMsg(Player player, Player target, String msg){
-        return MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(target).getMessage(msg));
+        return "§9§l[§bSwordCraftOnline§9] §r"+MessagePlaceholder.getPlaceholder(target,Main.languageHandler.getLanguage(player).getMessage(msg));
     }
 
     public static String getTitle(Player player, String title){
@@ -68,11 +68,15 @@ public final class Main extends JavaPlugin {
     }
 
     public static String getTitle(Player player,Player target, String title){
-        return  MessagePlaceholder.getPlaceholder(player,Main.languageHandler.getLanguage(target).getTitle(title));
+        return  MessagePlaceholder.getPlaceholder(target,Main.languageHandler.getLanguage(player).getTitle(title));
     }
 
     public static DBManager getDbManager(){
         return dbManager;
+    }
+
+    public static FileHandler getFileHandler() {
+        return fileHandler;
     }
 
 }

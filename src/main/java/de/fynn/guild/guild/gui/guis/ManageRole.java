@@ -24,7 +24,6 @@ public class ManageRole {
         GUIInventory guiInventory = new GUIInventory(27, Main.getTitle(player,"inventorys.manageRole"));
         GuildRoleManager roleManager = Main.guildManager.getPlayerGuild(player).getRoleManager();
         List<YesNoButton> buttons = new ArrayList<>();
-
         YesNoButton perm1 = new YesNoButton(Main.getTitle(player,"permissions.manageMembers"),Material.RED_WOOL,Material.GREEN_WOOL,role.containsPermission(GuildPermissions.MANAGE_MEMBER));
         buttons.add(perm1);
         perm1.addClickAction(new ClickAction() {
@@ -198,16 +197,17 @@ public class ManageRole {
             guiInventory.setItem(perm11,13);
         }
 
-        CounterBlock higher = new CounterBlock(Main.getTitle(player,"items.increasePriority"),true);
-        CounterBlock lower = new CounterBlock(Main.getTitle(player,"items.decreasePriority"),false);
+        CounterBlock higher = new CounterBlock(Main.getTitle(player,"items.increasePriority"),true,Integer.parseInt(role.getPriority()));
+        CounterBlock lower = new CounterBlock(Main.getTitle(player,"items.decreasePriority"),false,Integer.parseInt(role.getPriority()));
 
         higher.addClickAction(new ClickAction() {
             @Override
             public boolean execute(Player player) {
-                if(Integer.parseInt(roleManager.getRole(player).getPriority())<higher.getValue()){
+                if(Integer.parseInt(roleManager.getRole(player).getPriority())>higher.getValue()){
                     if(higher.getValue()<99){
                         higher.changeValue();
-                        higher.synchroValue(lower);
+                        lower.setValue(higher.getValue());
+                        player.openInventory(guiInventory.getInventory());
                     }
                 }
                 return false;
@@ -219,7 +219,8 @@ public class ManageRole {
             public boolean execute(Player player) {
                 if(lower.getValue()>0){
                     lower.changeValue();
-                    lower.synchroValue(higher);
+                    higher.setValue(lower.getValue());
+                    player.openInventory(guiInventory.getInventory());
                 }
                 return false;
             }
@@ -241,6 +242,7 @@ public class ManageRole {
             @Override
             public boolean execute(Player player) {
                 PlayerChatListener.observedPlayerRoleRename.put(player,role);
+                player.sendMessage(Main.getMsg(player,"renameRole"));
                 return true;
             }
         });
@@ -250,12 +252,16 @@ public class ManageRole {
         delete.addClickAction(new ClickAction() {
             @Override
             public boolean execute(Player player) {
+                Main.guildManager.getPlayerGuild(player).getRoleManager().replaceRole(role,Main.guildManager.getPlayerGuild(player).getRoleManager().getLoader().getDefaultRole());
                 roleManager.deleteRole(role);
+                player.sendMessage(roleManager.getRolePlaceholder(Main.getMsg(player,"roleDelete"),role));
                 player.openInventory(ManageRoles.getInventory(player).getInventory());
                 return false;
             }
         });
-        guiInventory.setItem(delete,19);
+        if(role.isErasable()){
+            guiInventory.setItem(delete,19);
+        }
         
         GUIItem finish = new GUIItem(new ItemStack(Material.GREEN_CONCRETE),Main.getTitle(player,"items.saveRole"));
         finish.addClickAction(new ClickAction() {
@@ -264,9 +270,10 @@ public class ManageRole {
                 StringBuilder builder = new StringBuilder();
                 for (YesNoButton button:
                         buttons) {
-                    builder.append(button.getState()?1:0);
+                    builder.append(button.getState()?"1":"0");
                 }
                 builder.append(higher.getValue()<10?"0"+higher.getValue():higher.getValue());
+                builder.append('0');
                 roleManager.editRole(role,new GuildRole(role.getName(), builder.toString()));
                 player.openInventory(ManageRoles.getInventory(player).getInventory());
                 return false;

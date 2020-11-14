@@ -38,11 +38,17 @@ public class Language {
         messages.put("kickedFromGuild.guild",langFile.getString("Messages.guild.kickedFromGuild.guild"));
         messages.put("invite.guildInvite",langFile.getString("Messages.guild.invite.guildInvite"));
         messages.put("invite.inviteAccept",langFile.getString("Messages.guild.invite.inviteAccept"));
-        messages.put("invite.noSelfInvite",langFile.getString("Messages.guild.invite.noSelfInvite"));
         messages.put("invite.noInvite",langFile.getString("Messages.guild.invite.noInvite"));
         messages.put("guildClosed",langFile.getString("Messages.guild.guildClosed"));
         messages.put("guildCreated.askGuildName",langFile.getString("Messages.guild.askGuildName"));
         messages.put("noDoubleGuildCreate",langFile.getString("Messages.guild.noDoubleGuildCreate"));
+        messages.put("askRoleName",langFile.getString("Messages.guild.askRoleName"));
+        messages.put("roleCreated",langFile.getString("Messages.guild.roleCreated"));
+        messages.put("roleDelete",langFile.getString("Messages.guild.roleDelete"));
+        messages.put("renameRole",langFile.getString("Messages.guild.renameRole"));
+        messages.put("renameRoleFinish",langFile.getString("Messages.guild.renameRoleFinish"));
+        messages.put("renameGuild",langFile.getString("Messages.guild.renameGuild"));
+        messages.put("renameGuildFinish",langFile.getString("Messages.guild.renameGuildFinish"));
 
         //titles
         titles.put("inventorys.noGuild", langFile.getString("Titles.inventorys.noGuild"));

@@ -6,7 +6,9 @@ import de.fynn.guild.guild.gui.guiItems.BackButton;
 import de.fynn.guild.guild.gui.guiItems.GUIItem;
 import de.fynn.guild.guild.gui.guiItems.NextButton;
 import de.fynn.guild.guild.gui.guiItems.PreviousButton;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class Invites {
 
@@ -20,13 +22,17 @@ public class Invites {
                     item.addClickAction(new ClickAction() {
                         @Override
                         public boolean execute(Player player) {
-
+                            Main.guildManager.addMember(player,item.getItemMeta().getDisplayName());
+                            Main.guildManager.removePlayerFromInviteList(player);
+                            Main.guildManager.sendMSGToAllGuildMembers(player,"joinGuild.guild");
+                            Main.guildlessPlayer.remove(player);
                             return true;
                         }
                     });
                 }
             }
         }
+
         GUIItem previous = new PreviousButton(player);
         previous.addClickAction(new ClickAction() {
             @Override
@@ -35,6 +41,12 @@ public class Invites {
                 return false;
             }
         });
+        if(guiInventory.getPageNumber()>0){
+            guiInventory.setItem(previous,9);
+        }else{
+            guiInventory.setItem(new GUIItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)," "),9);
+        }
+
 
         GUIItem next = new NextButton(player);
         next.addClickAction(new ClickAction() {
@@ -44,6 +56,11 @@ public class Invites {
                 return false;
             }
         });
+        if(guiInventory.getPageNumber()<guiInventory.getPages().size()-1){
+            guiInventory.setItem(next,17);
+        }else {
+            guiInventory.setItem(new GUIItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)," "),17);
+        }
 
         GUIItem back = new BackButton(player);
         back.addClickAction(new ClickAction() {
@@ -54,9 +71,8 @@ public class Invites {
             }
         });
 
-        guiInventory.setItem(previous,9);
-        guiInventory.setItem(next,17);
         guiInventory.setItem(back,13);
+
 
         return guiInventory;
     }

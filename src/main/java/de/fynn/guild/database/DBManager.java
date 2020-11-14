@@ -27,10 +27,10 @@ public class DBManager {
     }
 
     private void init(){
-        dbConnector.executeSQL("CREATE SCHEMA IF NOT EXISTS "+dbName+";");
-        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+".villagers (UUID VARCHAR(150) NOT NULL,PRIMARY KEY (UUID),UNIQUE INDEX UUID_UNIQUE (UUID ASC));");
-        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+".guilds (guild VARCHAR(150) NOT NULL,leader VARCHAR(150) NULL,PRIMARY KEY (guild));");
-        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+".lang (UUID VARCHAR(150) NOT NULL,lang VARCHAR(150) NULL,PRIMARY KEY (UUID));");
+        dbConnector.executeSQL("CREATE SCHEMA IF NOT EXISTS "+dbName+";",false);
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+".villagers (UUID VARCHAR(150) NOT NULL,PRIMARY KEY (UUID),UNIQUE INDEX UUID_UNIQUE (UUID ASC));",false);
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+".guilds (guild VARCHAR(150) NOT NULL,leader VARCHAR(150) NULL,PRIMARY KEY (guild));",false);
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+".lang (UUID VARCHAR(150) NOT NULL,lang VARCHAR(150) NULL,PRIMARY KEY (UUID));",false);
     }
 
     public HashMap<String, Guild> loadGuilds(){
@@ -47,7 +47,6 @@ public class DBManager {
                 allGildes.put(s,getGuild(s));
             }
         } catch (SQLException exception) {
-            System.out.println("LoadGuilds");
             exception.printStackTrace();
         }
         return allGildes;
@@ -62,17 +61,16 @@ public class DBManager {
             }
             result.close();
         }catch (SQLException exception){
-            System.out.println("Load Villagers");
             exception.printStackTrace();
         }
         return uuids;
     }
 
     public void createGuild(String guild, String owner){
-        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+"."+guild+" (UUID VARCHAR(150) NOT NULL,displayname VARCHAR(150) NULL,role VARCHAR(150) NULL,PRIMARY KEY (UUID),UNIQUE INDEX UUID_UNIQUE (UUID ASC));");
-        dbConnector.executeSQL("INSERT INTO "+dbName+".guilds(guild,leader) VALUES ('"+guild+"','"+owner+"');");
-        dbConnector.executeSQL("INSERT INTO "+dbName+"."+guild+"(UUID,displayname,role) VALUES ('"+owner+"','"+ Bukkit.getPlayer(UUID.fromString(owner)).getName()+"','owner');");
-        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+"."+guild+"Roles (role VARCHAR(150) NOT NULL,value VARCHAR(150) NOT NULL, PRIMARY KEY (role));");
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+"."+guild+" (UUID VARCHAR(150) NOT NULL,displayname VARCHAR(150) NULL,role VARCHAR(150) NULL,PRIMARY KEY (UUID),UNIQUE INDEX UUID_UNIQUE (UUID ASC));",false);
+        dbConnector.executeSQL("INSERT INTO "+dbName+".guilds(guild,leader) VALUES ('"+guild+"','"+owner+"');",false);
+        dbConnector.executeSQL("INSERT INTO "+dbName+"."+guild+"(UUID,displayname,role) VALUES ('"+owner+"','"+ Bukkit.getPlayer(UUID.fromString(owner)).getName()+"','owner');",false);
+        dbConnector.executeSQL("CREATE TABLE IF NOT EXISTS "+dbName+"."+guild+"Roles (role VARCHAR(150) NOT NULL,value VARCHAR(150) NOT NULL, PRIMARY KEY (role));",false);
         addGuildRoleToGuild(guild,new DefaultRole());
         addGuildRoleToGuild(guild,new Owner());
     }
@@ -93,32 +91,31 @@ public class DBManager {
             result.close();
             return new Guild(guild,UUID.fromString(leader),gildMembers);
         }catch (SQLException exception){
-            System.out.println("Get Guild");
             exception.printStackTrace();
         }
         return null;
     }
 
     public void deleteGuild(String guild){
-        dbConnector.executeSQL("DROP TABLE "+dbName+"."+guild+";");
-        dbConnector.executeSQL("DELETE FROM "+dbName+".guilds WHERE guild = '"+guild+"';");
-        dbConnector.executeSQL("DROP TABLE "+dbName+"."+guild+"Roles;");
+        dbConnector.executeSQL("DROP TABLE "+dbName+"."+guild+";",true);
+        dbConnector.executeSQL("DELETE FROM "+dbName+".guilds WHERE guild = '"+guild+"';",true);
+        dbConnector.executeSQL("DROP TABLE "+dbName+"."+guild+"Roles;",true);
     }
 
     public void addGuildMember(String guild, String uuid){
-        dbConnector.executeSQL("INSERT INTO "+dbName+"."+guild+"(UUID,displayname,role) VALUES ('"+uuid+"','"+Bukkit.getPlayer(uuid).getDisplayName()+"','default');");
+        dbConnector.executeSQL("INSERT INTO "+dbName+"."+guild+"(UUID,displayname,role) VALUES ('"+uuid+"','"+Bukkit.getPlayer(UUID.fromString(uuid)).getDisplayName()+"','default');",false);
     }
 
     public void removeGuildMember(String guild, String uuid){
-        dbConnector.executeSQL("DELETE FROM "+dbName+"."+guild+" WHERE UUID = '"+uuid+"';");
+        dbConnector.executeSQL("DELETE FROM "+dbName+"."+guild+" WHERE UUID = '"+uuid+"';",true);
     }
 
     public void addVillager(String uuid){
-        dbConnector.executeSQL("INSERT INTO "+dbName+".villagers(UUID) VALUES ('"+uuid+"');");
+        dbConnector.executeSQL("INSERT INTO "+dbName+".villagers(UUID) VALUES ('"+uuid+"');",false);
     }
 
     public void removeVillager(String uuid){
-        dbConnector.executeSQL("DELETE FROM "+dbName+".villagers WHERE UUID = '"+uuid+"';");
+        dbConnector.executeSQL("DELETE FROM "+dbName+".villagers WHERE UUID = '"+uuid+"';",true);
     }
 
     public boolean hasLanguage(Player player){
@@ -149,9 +146,9 @@ public class DBManager {
 
     public void setLanguage(Player player, String language){
         if(hasLanguage(player)){
-            dbConnector.executeSQL("UPDATE "+dbName+".lang SET lang = '"+language+"' WHERE UUID = '"+player.getUniqueId().toString()+"';");
+            dbConnector.executeSQL("UPDATE "+dbName+".lang SET lang = '"+language+"' WHERE UUID = '"+player.getUniqueId().toString()+"';",true);
         }else {
-            dbConnector.executeSQL("INSERT INTO "+dbName+".lang(UUID,lang) VALUES ('"+player.getUniqueId().toString()+"','"+language+"');");
+            dbConnector.executeSQL("INSERT INTO "+dbName+".lang(UUID,lang) VALUES ('"+player.getUniqueId().toString()+"','"+language+"');",true);
         }
     }
 
@@ -169,15 +166,17 @@ public class DBManager {
     }
 
     public void setGuildRole(Player player, String role){
-        dbConnector.executeSQL("UPDATE "+dbName+"."+Main.guildManager.getPlayerGuild(player).getGuildName()+" SET role = "+role+" WHERE UUID = '"+player.getUniqueId().toString()+"';");
+        dbConnector.executeSQL("UPDATE "+dbName+"."+Main.guildManager.getPlayerGuild(player).getGuildName()+" SET role = "+role+" WHERE UUID = '"+player.getUniqueId().toString()+"';",true);
     }
 
     public void addGuildRoleToGuild(String guild, GuildRole role){
-        dbConnector.executeSQL("INSERT INTO "+dbName+"."+guild+"Roles(role,value) VALUES ('"+role.getName()+"','"+role.toString()+"');");
+        dbConnector.executeSQL("INSERT INTO "+dbName+"."+guild+"Roles(role,value) VALUES ('"+role.getName()+"','"+role.toString()+"');",false);
     }
 
     public void updateRole(String guild, GuildRole role){
-        dbConnector.executeSQL("UPDATE "+dbName+"."+guild+"Roles SET value = "+role.toString()+" WHERE role = '"+role.getName()+"';");
+        deleteRole(guild,role.getName());
+        addGuildRoleToGuild(guild, role);
+        //dbConnector.executeSQL("UPDATE "+dbName+"."+guild+"Roles SET value = "+role.toString()+" WHERE role = '"+role.getName()+"';");
     }
 
     public List<GuildRole> getGuildRoles(String guild){
@@ -192,7 +191,6 @@ public class DBManager {
         }catch (SQLException exception) {
             exception.printStackTrace();
         }
-        if(roles.isEmpty()) System.out.println("nö");
         return roles;
     }
 
@@ -208,30 +206,18 @@ public class DBManager {
         return "";
     }
 
-    public String getUUID(String displayname, Guild guild){
-        ResultSet result = dbConnector.getData("SELECT UUID FROM "+dbName+"."+guild.getGuildName()+" WHERE displayname = '"+displayname+"';");
-        try {
-            if (result.next()){
-                return result.getString(1);
-            }
-        }catch (SQLException exception){
-            exception.printStackTrace();
-        }
-        return "";
-    }
-
     public void renameGuild(String guildName, String newName){
-        dbConnector.executeSQL("ALTER TABLE "+dbName+"."+guildName+" RENAME TO "+dbName+"."+newName+";");
-        dbConnector.executeSQL("ALTER TABLE "+dbName+"."+guildName+"Roles RENAME TO "+dbName+"."+newName+"Roles;");
-        dbConnector.executeSQL("UPDATE "+dbName+".guilds SET guild = '"+newName+"' WHERE guild = '"+guildName+"';");
+        dbConnector.executeSQL("ALTER TABLE "+dbName+"."+guildName+" RENAME TO "+dbName+"."+newName+";",false);
+        dbConnector.executeSQL("ALTER TABLE "+dbName+"."+guildName+"Roles RENAME TO "+dbName+"."+newName+"Roles;",false);
+        dbConnector.executeSQL("UPDATE "+dbName+".guilds SET guild = '"+newName+"' WHERE guild = '"+guildName+"';",false);
     }
 
     public void renameRole(String guild, String oldName, String newName){
-        dbConnector.executeSQL("UPDATE "+dbName+"."+guild+"Roles SET role = '"+newName+"' WHERE role = '"+oldName+"';");
+        dbConnector.executeSQL("UPDATE "+dbName+"."+guild+"Roles SET role = '"+newName+"' WHERE role = '"+oldName+"';",true);
     }
 
     public void deleteRole(String guild,String role){
-        dbConnector.executeSQL("DELETE FROM "+dbName+"."+guild+"Roles WHERE role = '"+role+"';");
+        dbConnector.executeSQL("DELETE FROM "+dbName+"."+guild+"Roles WHERE role = '"+role+"';",true);
     }
 
 }

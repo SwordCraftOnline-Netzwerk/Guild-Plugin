@@ -6,8 +6,8 @@ authors: [ Fynn ]
 prefix: §9[§bSwordCraftOnline§9]§r§7 Message
 commands:
   guildManager:
-    description: ""
-    usage: /guildManager create [Name]
+    description: "Creates a villager that is used for all guild actions. A name can also be given to give the villager (custom name)"
+    usage: /guildManager create [name]
   guildLanguage:
-    description: ""
-    usage: /guildLanguage <Language> z.B. de_DE
+    description: "Changes the language to the selected language, if it exists"
+    usage: /guildLanguage <Language> z.B. en_EN

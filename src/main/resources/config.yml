@@ -2,17 +2,35 @@
 #
 #
 MySQL:
+  # The name of the database schema that is created by this plugin
   DB_Name:
     'guild'
+  # The IP address and port of the used database
   IP:
-    'billoserver.hopefuls.de:3306'
+    'ip:port'
+  # The account that is used to connect to the database
   User:
-    'root'
+    'user'
+  # The password that is required for the user above
   Password:
-    'hope123'
+    'password'
 #
 #
 #
 Language:
+  # The default language that is used for a player joining for the first time to the server (language must be available as a file)
   Default:
-    'de_DE'
+    'en_EN'
+#
+#
+#
+Guilds:
+  # The Name of the Villager that manage guild actions
+  guildmaster:
+    'Guildmaster'
+  # The prize for founding a guild (e.g. 0.0, 100.45...)
+  prize:
+    '0.0'
+  # The max amount of members a guild can have (-1 means unlimited members)
+  maxMembers:
+    '-1'

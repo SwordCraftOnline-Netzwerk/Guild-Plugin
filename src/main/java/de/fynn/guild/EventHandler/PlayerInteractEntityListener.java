@@ -13,11 +13,14 @@ public class PlayerInteractEntityListener implements Listener {
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
         if(Main.villagerManager.containsVillager(event.getRightClicked().getUniqueId())){
             if(Main.guildManager.hasGuild(event.getPlayer())){
+                event.setCancelled(true);
                 event.getPlayer().openInventory(MyGuild.getInventory(event.getPlayer(), Main.guildManager.getPlayerGuild(event.getPlayer())).getInventory());
             }else {
                 if(!PlayerChatListener.observedPlayerCreate.contains(event.getPlayer())){
+                    event.setCancelled(true);
                     event.getPlayer().openInventory(NoGuild.getInventory(event.getPlayer()).getInventory());
                 }else {
+                    event.setCancelled(true);
                     event.getPlayer().sendMessage(Main.getMsg(event.getPlayer(),"noDoubleGuildCreate"));
                 }
             }

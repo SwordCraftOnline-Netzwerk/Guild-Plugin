@@ -14,10 +14,6 @@ public class GuildRoleManager {
 
     public GuildRoleManager(Guild guild){
         loader = new GuildRoleLoader(guild);
-        for (Player player:
-             guild.getOnlineMembers()) {
-            permissions.put(player, loader.getRole(Main.getDbManager().getGuildRole(player,guild)));
-        }
         this.guild = guild;
     }
 
@@ -73,13 +69,26 @@ public class GuildRoleManager {
     }
 
     public void renameRole(GuildRole role, String name){
-        loader.getRole(role.getName()).rename(name);
         Main.getDbManager().renameRole(guild.getGuildName(),role.getName(),name);
+        loader.renameRole(role.getName(),name);
     }
 
     public void deleteRole(GuildRole role){
         loader.removeRole(role);
         Main.getDbManager().deleteRole(guild.getGuildName(),role.getName());
+    }
+
+    public String getRolePlaceholder(String msg, GuildRole role){
+        return msg.replace("%role_name%",role.getName());
+    }
+
+    public void replaceRole(GuildRole old,GuildRole newRole){
+        for (GuildRole role:
+                permissions.values()) {
+            if(role==old){
+                old = newRole;
+            }
+        }
     }
 
 }

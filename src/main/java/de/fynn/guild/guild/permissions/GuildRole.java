@@ -9,6 +9,7 @@ public class GuildRole {
 
     private String name;
     private String priority;
+    private boolean isErasable = true;
 
     public GuildRole(String roleName, String permissionData){
         name = roleName;
@@ -54,6 +55,9 @@ public class GuildRole {
             }
         }
         priority = ""+perm[11]+perm[12];
+        if(perm[13]=='1'){
+            isErasable = false;
+        }
     }
 
     public boolean containsPermission(GuildPermissions permission){
@@ -115,6 +119,9 @@ public class GuildRole {
             }
         }
         priority = ""+perm[11]+perm[12];
+        if(perm[13]=='1'){
+            isErasable = false;
+        }
     }
 
     public String getPriority() {
@@ -124,27 +131,28 @@ public class GuildRole {
     @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();
-        builder.append(permissions.contains(GuildPermissions.MANAGE_MEMBER)?1:0);
-        builder.append(permissions.contains(GuildPermissions.MANAGE_GUILD)?1:0);
-        builder.append(permissions.contains(GuildPermissions.INVITE)?1:0);
-        builder.append(permissions.contains(GuildPermissions.KICK)?1:0);
-        builder.append(permissions.contains(GuildPermissions.ACCEPT_REQUEST)?1:0);
-        builder.append(permissions.contains(GuildPermissions.ROLE)?1:0);
-        builder.append(permissions.contains(GuildPermissions.CLOSE)?1:0);
-        builder.append(permissions.contains(GuildPermissions.MANAGE_MONEY)?1:0);
-        builder.append(permissions.contains(GuildPermissions.MANAGE_ROLE)?1:0);
-        builder.append(permissions.contains(GuildPermissions.MANAGE_GULDATTRIBUTES)?1:0);
-        builder.append(permissions.contains(GuildPermissions.WAR)?1:0);
+        builder.append(permissions.contains(GuildPermissions.MANAGE_MEMBER)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.MANAGE_GUILD)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.INVITE)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.KICK)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.ACCEPT_REQUEST)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.ROLE)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.CLOSE)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.MANAGE_MONEY)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.MANAGE_ROLE)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.MANAGE_GULDATTRIBUTES)?"1":"0");
+        builder.append(permissions.contains(GuildPermissions.WAR)?"1":"0");
         builder.append(priority);
+        builder.append(isErasable?'0':'1');
         return builder.toString();
     }
 
     public char[] validatePermissionData(char[] perm){
-        if(perm.length<13){
-            char[] fixedPerm = new char[13];
-            for (int i = 0; i < 13; i++) {
+        if(perm.length<14){
+            char[] fixedPerm = new char[14];
+            for (int i = 0; i < 14; i++) {
                 if(i==perm.length-1||i==perm.length-2){
-                    fixedPerm[i==perm.length-1?13:12] = perm[i];
+                    fixedPerm[i==perm.length-1?12:11] = perm[i];
                 }else {
                     if(i<perm.length){
                         fixedPerm[i] = perm[i];
@@ -158,4 +166,7 @@ public class GuildRole {
         return perm;
     }
 
+    public boolean isErasable() {
+        return isErasable;
+    }
 }

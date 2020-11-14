@@ -40,6 +40,16 @@ public class GUIInventory implements InventoryHolder {
         return inventory;
     }
 
+    public Inventory getInventory(String name) {
+        Inventory inventory = Bukkit.createInventory(this, size, name);
+        for (int i = 0; i < size; i++) {
+            if(items[i]!=null){
+                inventory.setItem(i,items[i].getItemStack());
+            }
+        }
+        return inventory;
+    }
+
     private void fill(){
         for (int i = 0; i < size; i++) {
             items[i] = new GUIItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)," ");

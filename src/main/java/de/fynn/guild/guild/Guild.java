@@ -1,6 +1,7 @@
 package de.fynn.guild.guild;
 
 import de.fynn.guild.Main;
+import de.fynn.guild.guild.permissions.GuildRole;
 import de.fynn.guild.guild.permissions.GuildRoleManager;
 import de.fynn.guild.guild.permissions.pattern.DefaultRole;
 import org.bukkit.Bukkit;
@@ -34,6 +35,14 @@ public class Guild {
         }
     }
 
+    public Guild(String name, UUID leader){
+        guildName = name;
+        this.leader = leader;
+        members.add(leader);
+        roleManager = new GuildRoleManager(this);
+        addOnlineMember(Bukkit.getPlayer(leader));
+    }
+
     protected boolean containsPlayer(UUID uuid){
         return members.contains(uuid);
     }
@@ -44,8 +53,7 @@ public class Guild {
 
     protected void addMember(String UUID){
         members.add(java.util.UUID.fromString(UUID));
-        addOnlineMember(Bukkit.getPlayer(java.util.UUID.fromString(UUID)));
-        roleManager.addPlayer(Bukkit.getPlayer(java.util.UUID.fromString(UUID)),new DefaultRole());
+        addOnlineMember(Bukkit.getPlayer(java.util.UUID.fromString(UUID)),roleManager.getLoader().getDefaultRole());
     }
 
     protected boolean removeMember(String UUID){
@@ -81,6 +89,11 @@ public class Guild {
     public void addOnlineMember(Player player){
         onlineMembers.add(player);
         roleManager.addPlayer(player,roleManager.getLoader().getRole(Main.getDbManager().getGuildRole(player,this)));
+    }
+
+    public void addOnlineMember(Player player, GuildRole role){
+        onlineMembers.add(player);
+        roleManager.addPlayer(player,role);
     }
 
     public void removeOnlineMember(Player player){

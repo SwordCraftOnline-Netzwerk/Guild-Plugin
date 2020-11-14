@@ -22,6 +22,8 @@ public class ManageMember {
                 @Override
                 public boolean execute(Player player) {
                     Main.guildManager.removeMember(target,Main.guildManager.getPlayerGuild(player).getGuildName());
+                    target.sendMessage(Main.getMsg(player,target,"kickedFromGuild.player"));
+                    Main.guildManager.sendMSGToAllGuildMembers(target,"kickedFromGuild.guild");
                     return false;
                 }
             });

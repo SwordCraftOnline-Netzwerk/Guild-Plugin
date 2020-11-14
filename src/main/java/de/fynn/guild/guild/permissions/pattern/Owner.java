@@ -5,7 +5,7 @@ import de.fynn.guild.guild.permissions.GuildRole;
 public class Owner extends GuildRole {
 
     public Owner() {
-        super("owner","1111111111199");
+        super("owner","11111111111991");
     }
 
 }

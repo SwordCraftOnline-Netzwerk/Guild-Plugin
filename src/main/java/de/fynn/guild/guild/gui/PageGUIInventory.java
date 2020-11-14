@@ -1,6 +1,7 @@
 package de.fynn.guild.guild.gui;
 
 import de.fynn.guild.guild.gui.guiItems.GUIItem;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -12,9 +13,11 @@ public class PageGUIInventory extends GUIInventory {
 
     private List<InventoryPage> pages = new ArrayList<>();
     private int page = 0;
+    private String title;
 
     public PageGUIInventory(int size, String title, InventoryPage... pages) {
         super(size, title);
+        this.title = title;
         for (InventoryPage currentPage:
              pages) {
             addPage(currentPage);
@@ -29,13 +32,13 @@ public class PageGUIInventory extends GUIInventory {
     public Inventory next(){
         page = page+1<pages.size() ? page+1 : page;
         loadPage();
-        return getInventory();
+        return getInventory(title+" ("+(page+1)+"/"+pages.size()+")");
     }
 
     public Inventory previous(){
         page = page-1>-1 ? page-1 : page;
         loadPage();
-        return getInventory();
+        return getInventory(title+" ("+(page+1)+"/"+pages.size()+")");
     }
 
     public void setPage(InventoryPage page, int pos){
@@ -51,6 +54,15 @@ public class PageGUIInventory extends GUIInventory {
 
     public List<InventoryPage> getPages(){
         return pages;
+    }
+
+    public int getPageNumber() {
+        return page;
+    }
+
+    @Override
+    public Inventory getInventory(){
+        return super.getInventory(title+" ("+(page+1)+"/"+pages.size()+")");
     }
 
 }

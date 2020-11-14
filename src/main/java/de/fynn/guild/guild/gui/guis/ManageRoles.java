@@ -47,6 +47,12 @@ public class ManageRoles {
                 return false;
             }
         });
+        if(guiInventory.getPageNumber()>0){
+            guiInventory.setItem(previous,9);
+        }else{
+            guiInventory.setItem(new GUIItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)," "),9);
+        }
+
         GUIItem next = new NextButton(player);
         next.addClickAction(new ClickAction() {
             @Override
@@ -55,6 +61,12 @@ public class ManageRoles {
                 return false;
             }
         });
+        if(guiInventory.getPageNumber()<guiInventory.getPages().size()-1){
+            guiInventory.setItem(next,17);
+        }else {
+            guiInventory.setItem(new GUIItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)," "),17);
+        }
+
         guiInventory.setItem(create,12);
         GUIItem back = new BackButton(player);
         back.addClickAction(new ClickAction() {
@@ -64,9 +76,8 @@ public class ManageRoles {
                 return false;
             }
         });
+
         guiInventory.setItem(back,14);
-        guiInventory.setItem(next,17);
-        guiInventory.setItem(previous,9);
         return guiInventory;
     }
 

@@ -19,6 +19,7 @@ public class ManageAttributes {
             @Override
             public boolean execute(Player player) {
                 PlayerChatListener.observedPlayerRename.add(player);
+                player.sendMessage(Main.getMsg(player,"renameGuild"));
                 return true;
             }
         });

@@ -1,6 +1,7 @@
 package de.fynn.guild.lang;
 
 import de.fynn.guild.Main;
+import de.fynn.guild.guild.permissions.GuildRole;
 import org.bukkit.entity.Player;
 
 public class MessagePlaceholder {
